@@ -1,24 +1,41 @@
-import logo from './logo.svg';
+import React, { useCallback, useEffect } from 'react';
 import './App.css';
+import { API } from 'aws-amplify'
+import { Authenticator,useAuthenticator } from '@aws-amplify/ui-react';
+import '@aws-amplify/ui-react/styles.css';
+import { Dashboard } from './pages/Dashboard/Dashboard';
+import {UserAuthProvider} from "./context/UserAuthContext";
+import Test from './Test';
 
 function App() {
+  
+  const addUser = useCallback(
+    async (parentId) => {
+      const data = {
+        body: {
+          name: "Arslan",
+          email: "arsalan.hayat@teamo.io",
+          address: "xyz",
+          role: "Practioner",
+          parentId
+        }
+      }
+      const apiData = await API.put('userInfo', "/addUser", data);
+      console.log("User Data", apiData)
+
+    },
+    [],
+  )
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    // <Authenticator>
+    //   {({ signOut, user }) => (
+        <div className="App">
+          <UserAuthProvider>
+            <Test />
+          </UserAuthProvider>
+        </div>
+    //   )}
+    // </Authenticator>
   );
 }
 
