@@ -24,8 +24,6 @@ export const UserForm = (props) => {
 
     const handleCreateUser = (values, resetForm) => {
         const { email, name,role } = values
-        console.log(values)
-
         const addUser = (
             async (parentId) => {
                 const data = {
@@ -38,9 +36,7 @@ export const UserForm = (props) => {
                 try {
                     await API.put('userInfo', "/addUser", data);
                     const apiData = await API.get('userInfo', "/addUser");
-                    console.log(apiData?.data.Users)
                     dispatch({ type: "SET_USERS_List", payload: apiData?.data?.Users || [] })
-    
                     showMessage('User created', 'success')
                     resetForm()
                     handleCancel()
@@ -65,9 +61,7 @@ export const UserForm = (props) => {
             try {
                 await API.put('userInfo', "/addUser/update", data);
                 const apiData = await API.get('userInfo', "/addUser");
-                console.log(apiData?.data.Users)
                 dispatch({ type: "SET_USERS_List", payload: apiData?.data?.Users || [] })
-
                 showMessage('User Updated', 'success')
                 resetForm()
                 handleCancel()

@@ -2,7 +2,7 @@ import PrivateRoutes from "./PrivateRoutes";
 import { useSessionContext } from "../context/SessionContext";
 import { Redirect, Route, Switch } from 'react-router';
 import { Login } from "../pages/Login/Login";
-import Test from "../Test";
+import Main from "../Main";
 import { Authenticator } from "@aws-amplify/ui-react"
 
 export const Routes = () => {
@@ -24,9 +24,9 @@ export const Routes = () => {
             <Authenticator>
                 {() => (
                     <Switch>
-                        <PrivateRoutes {...defaultPrivateRoutesProps} path='/admin' component={Test} role='Admin' />
-                        <PrivateRoutes {...defaultPrivateRoutesProps} redirectPath="/practioner" path='/practioner' component={Test} role='Practioner' />
-                        <PrivateRoutes {...defaultPrivateRoutesProps} redirectPath="/business" path='/business' component={Test} role='Business' />
+                        <PrivateRoutes {...defaultPrivateRoutesProps} path='/admin' component={Main} role='Admin' />
+                        <PrivateRoutes {...defaultPrivateRoutesProps} redirectPath="/practioner" path='/practioner' component={Main} role='Practioner' />
+                        <PrivateRoutes {...defaultPrivateRoutesProps} redirectPath="/business" path='/business' component={Main} role='Business' />
 
                         <Route path='/login' component={Login} />
                         <Redirect

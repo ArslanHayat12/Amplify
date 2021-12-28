@@ -10,7 +10,6 @@ export default function PrivateRoutes({
     ...routeProps
 }) {
     const currentLocation = useLocation()
-console.log(isAuthenticated)
     useEffect(() => {
         if (!isAuthenticated) {
             setRedirectPath(currentLocation.pathname)

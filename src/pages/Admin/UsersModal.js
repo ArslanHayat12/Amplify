@@ -7,7 +7,6 @@ import { UserForm } from './UserForm'
 
 export const UsersModal = (props) => {
     const { isModalVisible, setIsModalVisible } = props
-    console.log(props)
     const formRef = useRef(null)
 
     const { dispatch } = useUserContext()

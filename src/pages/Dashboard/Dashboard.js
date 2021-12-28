@@ -12,9 +12,8 @@ import { useAuthenticator } from "@aws-amplify/ui-react";
 import { UserAuthProvider } from "../../context/UserAuthContext";
 
 export const Dashboard = () => {
-  const [session, setSession] = useSessionContext()
+  const [session, ] = useSessionContext()
   const { user, signOut }=useAuthenticator()
-  console.log(user,session,session&&roleBasedRoutes[session.role]?.routes)
   const topics = session&&roleBasedRoutes[session.role]?.routes?.map((route) => {
     return(route.name)
 

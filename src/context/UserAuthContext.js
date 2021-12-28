@@ -27,7 +27,6 @@ const reducer = (state, action) => {
         case 'SELECTED_USER':
             return { ...state, currentUser: action.payload };
         case 'SET_USERS_List': {
-            console.log("I am here")
             const mappedData = action.payload.map(user => {
                 const role = user.Attributes.map(attribute => {
                     return attribute.Name === 'custom:role' ? attribute.Value.split(",") : null
@@ -43,11 +42,6 @@ const reducer = (state, action) => {
             const practioner = mappedData.filter(data => data.role?.includes("Practioner")).length;
             const business = mappedData.filter(data => data.role?.includes("Business")).length;
             const admin = mappedData.filter(data => data.role?.includes("Admin")).length;
-            console.log(mappedData, {
-                practioner,
-                business,
-                admin
-            })
             return {
                 ...state, usersList: mappedData, role: {
                     practioner,
@@ -61,11 +55,6 @@ const reducer = (state, action) => {
             const practioner = mappedData.role?.includes("Practioner") ? 1 : 0;
             const business = mappedData.role?.includes("Business") ? 1 : 0;
             const admin = mappedData.role?.includes("Admin") ? 1 : 0;
-            console.log(mappedData, {
-                practioner,
-                business,
-                admin
-            })
             return {
                 ...state, usersList: [...state.usersList, mappedData], role: {
                     practioner,

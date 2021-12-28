@@ -178,13 +178,13 @@ app.put(path, function (req, res) {
     region: "us-east-1"
   });
 
-
+  const randPassword = Array(10).fill("0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz@$^&").map(function (x) { return x[Math.floor(Math.random() * x.length)] }).join('');
   var poolData = {
     UserPoolId: "us-east-1_8nDtIfnOw",
     Username: req.body?.email,
 
     DesiredDeliveryMediums: ["EMAIL"],
-    TemporaryPassword: "AbcTest@322221",
+    TemporaryPassword: randPassword,
     UserAttributes: [
       {
         Name: "email",
@@ -230,7 +230,7 @@ app.put(path, function (req, res) {
 * HTTP post method for insert object *
 *************************************/
 
-app.put(path+"/update", function (req, res) {
+app.put(path + "/update", function (req, res) {
 
   if (userIdPresent) {
     req.body['userId'] = req.apiGateway.event.requestContext.identity.cognitoIdentityId || UNAUTH;
@@ -316,7 +316,7 @@ app.get(path, function (req, res) {
 ***************************************/
 
 app.delete(path + hashKeyPath, function (req, res) {
-  
+
   const COGNITO_CLIENT = new AWS.CognitoIdentityServiceProvider({
     apiVersion: "2016-04-19",
     region: "us-east-1"
@@ -339,7 +339,7 @@ app.delete(path + hashKeyPath, function (req, res) {
     UserPoolId: "us-east-1_8nDtIfnOw",
     Username: params[partitionKeyName],
   };
-  
+
   COGNITO_CLIENT.adminDeleteUser(poolData, (err, data) => {
     if (err) {
       res.statusCode = 500;

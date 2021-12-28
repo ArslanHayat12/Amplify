@@ -62,7 +62,6 @@ export const Admin = () => {
             dataIndex: 'role',
             render: role => (
                 <>
-                    {console.log(role)}
                     {role?.map(tag => {
                         let color = tag.length > 5 ? 'geekblue' : 'green';
 
@@ -90,7 +89,6 @@ export const Admin = () => {
         const getUsers = async () => {
             dispatch({ type: "SET_LOADING", payload: true })
             const apiData = await API.get('userInfo', "/addUser");
-            console.log(apiData?.data.Users)
             dispatch({ type: "SET_USERS_List", payload: apiData?.data?.Users || [] })
             dispatch({ type: "SET_LOADING", payload: false })
             console.log("User Data", apiData)
@@ -127,7 +125,6 @@ const data = state.usersList?.map(user => ({
 }))
 
 const UserModal = useMemo(() => {
-    console.log(isUserModalVisible)
     return isUserModalVisible && <UsersModal isModalVisible={isUserModalVisible} setIsModalVisible={setIsUserModalVisible} />
 }, [isUserModalVisible, setIsUserModalVisible])
 
