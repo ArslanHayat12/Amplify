@@ -1,9 +1,11 @@
 import PrivateRoutes from "./PrivateRoutes";
 import { useSessionContext } from "../context/SessionContext";
-import { Redirect, Route, Switch } from 'react-router';
+import { Redirect, Route, Switch, useHistory } from 'react-router-dom';
 import { Login } from "../pages/Login/Login";
 import Main from "../Main";
 import { Authenticator } from "@aws-amplify/ui-react"
+import { Auth } from "aws-amplify";
+import { useEffect } from "react";
 
 export const Routes = () => {
     const [sessionContext, updateSessionContext] = useSessionContext();
@@ -18,7 +20,19 @@ export const Routes = () => {
         setRedirectPath: setRedirectPath,
         role: 'Admin'
     };
+    const history = useHistory()
 
+    async function checkAuthState() {
+      try {
+      await Auth.currentAuthenticatedUser()
+      } catch (err) {
+        history.push('/login')
+      }
+    }
+    useEffect(() => {
+      checkAuthState()
+    },[sessionContext.isAuthenticated])
+    
     return (
         <div>
             <Authenticator>

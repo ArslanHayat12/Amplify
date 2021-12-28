@@ -12,6 +12,7 @@ function Main() {
     const [session, setSession] = useSessionContext();
     const history = useHistory();
 
+ 
     console.log(user)
     useEffect(() => {
         setSession({ ...session, isAuthenticated: !!user, role: user.attributes?.['custom:role'] || 'Admin' });

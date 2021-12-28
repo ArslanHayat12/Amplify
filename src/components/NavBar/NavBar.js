@@ -5,6 +5,7 @@ import { NavbarStyle } from "./style";
 import TopicMenu from "../TopicMenu";
 import logo from "./../../logo.svg";
 import { useHistory } from "react-router-dom";
+import {Auth} from "aws-amplify";
 
 import { useSessionContext } from '../../context/SessionContext';
 
@@ -40,6 +41,11 @@ const NavBar = ({ menu, signOut, user }) => {
         <Dropdown
           overlay={<TopicMenu
             topics={['Sign Out']}
+            changeSelectedKey={() => {
+              setSession({...session, isAuthenticated: false});
+              Auth.signOut()
+              // signOut()
+            }}
 
           />}
            trigger={["click"]}
@@ -47,11 +53,7 @@ const NavBar = ({ menu, signOut, user }) => {
 
         >
           
-          <div onClick={() => {
-            history.push('/login')
-            setSession({...session, isAuthenticated: false});
-            signOut()
-          }}>
+          <div >
             {user.username}
             <Avatar size="default" icon={<UserOutlined />} />
           </div>
