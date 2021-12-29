@@ -52,7 +52,7 @@ export const Admin = () => {
             key: 'email',
         },
         {
-            title: 'Email varified',
+            title: 'Email verified',
             dataIndex: 'email_verified',
             key: 'email_verified',
         },
