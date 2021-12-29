@@ -5,7 +5,6 @@ import { NavbarStyle } from "./style";
 import TopicMenu from "../TopicMenu";
 import logo from "./../../logo.svg";
 import { useHistory } from "react-router-dom";
-import {Auth} from "aws-amplify";
 
 import { useSessionContext } from '../../context/SessionContext';
 
@@ -43,8 +42,8 @@ const NavBar = ({ menu, signOut, user }) => {
             topics={['Sign Out']}
             changeSelectedKey={() => {
               setSession({...session, isAuthenticated: false});
-              Auth.signOut()
-              // signOut()
+              signOut()
+              history.push('/login')
             }}
 
           />}

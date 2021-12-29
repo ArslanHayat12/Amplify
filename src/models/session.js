@@ -6,40 +6,19 @@ export const initialSession = {
     role: 'admin'
 }
 
-export const roleBasedRoutes = {
-    Practioner: {
+export const getRoleBasedRoutes = (role) => {
+    const isPractioner = role.includes("Practioner")
+    const isBusiness = role.includes("Business")
+    const isAdmin = role.includes("Admin")
+    const isOrganization = role.includes("Organization")
+
+    return {
         routes: [
-            { name: 'Practioner', path: '/practioner', icon: <AreaChartOutlined /> },
-        ],
-        redirectPath: '/practioner'
-    },
-    "Practioner,Business": {
-        routes: [
-            { name: 'Practioner', path: '/practioner', icon: <AreaChartOutlined /> },
-            { name: 'Business', path: '/business', icon: <AreaChartOutlined /> }
-        ],
-        redirectPath: '/practioner'
-    },
-    "Admin,Practioner,Business": {
-        routes: [
-            { name: 'Admin', path: '/admin', icon: <AreaChartOutlined /> },
-            { name: 'Practioner', path: '/practioner', icon: <AreaChartOutlined /> },
-            { name: 'Business', path: '/business', icon: <AreaChartOutlined /> }
-        ],
-        redirectPath: '/admin'
-    },
-    Business: {
-        routes: [
-            { name: 'Business', path: '/business', icon: <AreaChartOutlined /> }
-        ],
-        redirectPath: '/business'
-    },
-    Admin: {
-        routes: [
-            { name: 'Admin', path: '/admin', icon: <AreaChartOutlined /> },
-            { name: 'Business', path: '/business', icon: <AreaChartOutlined /> },
-            { name: 'Practioner', path: '/practioner', icon: <AreaChartOutlined /> },
-        ],
-        redirectPath: '/admin'
+            isAdmin && { name: 'Admin', path: '/admin', icon: <AreaChartOutlined /> },
+            (isAdmin||isPractioner) && { name: 'Practioner', path: '/practioner', icon: <AreaChartOutlined /> },
+            (isAdmin||isBusiness) && { name: 'Business', path: '/business', icon: <AreaChartOutlined /> },
+            (isAdmin||isOrganization) && { name: 'Organization', path: '/organization', icon: <AreaChartOutlined /> },
+        ].filter(Boolean),
+        redirectPath: isAdmin ? '/admin' : isPractioner ? '/practioner' : isBusiness ? '/business' : '/organization'
     }
 }
