@@ -13,6 +13,9 @@
     },
     "userInfo": {
       "Type": "String"
+    },
+    "rolebase": {
+      "Type": "String"
     }
   },
   "Conditions": {

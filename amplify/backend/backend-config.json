@@ -36,6 +36,10 @@
     "userInfoDb": {
       "service": "DynamoDB",
       "providerPlugin": "awscloudformation"
+    },
+    "rolebasedasboardcontent": {
+      "service": "DynamoDB",
+      "providerPlugin": "awscloudformation"
     }
   },
   "function": {
@@ -88,6 +92,34 @@
             "Name": "TABLE_NAME",
             "Arn": "TABLE_ARN"
           }
+        },
+        {
+          "category": "storage",
+          "resourceName": "rolebasedasboardcontent",
+          "attributes": [
+            "Name",
+            "Arn",
+            "StreamArn"
+          ]
+        }
+      ]
+    },
+    "amplifyapp939e2ae7": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda",
+      "dependsOn": [
+        {
+          "category": "storage",
+          "resourceName": "rolebasedasboardcontent",
+          "attributes": [
+            "Name",
+            "Arn"
+          ],
+          "attributeEnvMap": {
+            "Name": "TABLE_NAME",
+            "Arn": "TABLE_ARN"
+          }
         }
       ]
     }
@@ -125,6 +157,20 @@
           "attributes": [
             "Arn",
             "Name"
+          ]
+        }
+      ]
+    },
+    "rolebase": {
+      "service": "API Gateway",
+      "providerPlugin": "awscloudformation",
+      "dependsOn": [
+        {
+          "category": "function",
+          "resourceName": "amplifyapp939e2ae7",
+          "attributes": [
+            "Name",
+            "Arn"
           ]
         }
       ]

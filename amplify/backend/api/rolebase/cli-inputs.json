@@ -1,0 +1,12 @@
+{
+  "version": 1,
+  "paths": {
+    "/dashboard-content": {
+      "name": "/dashboard-content",
+      "lambdaFunction": "amplifyapp939e2ae7",
+      "permissions": {
+        "setting": "open"
+      }
+    }
+  }
+}

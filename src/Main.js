@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import './App.css';
-import { useAuthenticator } from '@aws-amplify/ui-react';
+import { useAuthenticator, } from '@aws-amplify/ui-react';
 import '@aws-amplify/ui-react/styles.css';
 import { Dashboard } from './pages/Dashboard/Dashboard';
 import { useSessionContext } from './context/SessionContext';

@@ -16,23 +16,11 @@
     "s3Key": {
       "Type": "String"
     },
-    "storageuserInfoDbName": {
-      "Type": "String",
-      "Default": "storageuserInfoDbName"
-    },
-    "storageuserInfoDbArn": {
-      "Type": "String",
-      "Default": "storageuserInfoDbArn"
-    },
     "storagerolebasedasboardcontentName": {
       "Type": "String",
       "Default": "storagerolebasedasboardcontentName"
     },
     "storagerolebasedasboardcontentArn": {
-      "Type": "String",
-      "Default": "storagerolebasedasboardcontentArn"
-    },
-    "storagerolebasedasboardcontentStreamArn": {
       "Type": "String",
       "Default": "storagerolebasedasboardcontentArn"
     }
@@ -67,12 +55,12 @@
         "FunctionName": {
           "Fn::If": [
             "ShouldNotCreateEnvResources",
-            "amplifyapp5152cec3",
+            "amplifyapp939e2ae7",
             {
               "Fn::Join": [
                 "",
                 [
-                  "amplifyapp5152cec3",
+                  "amplifyapp939e2ae7",
                   "-",
                   {
                     "Ref": "env"
@@ -109,12 +97,12 @@
         "RoleName": {
           "Fn::If": [
             "ShouldNotCreateEnvResources",
-            "amplifyappLambdaRole37c09f1f",
+            "amplifyappLambdaRole48038f1d",
             {
               "Fn::Join": [
                 "",
                 [
-                  "amplifyappLambdaRole37c09f1f",
+                  "amplifyappLambdaRole48038f1d",
                   "-",
                   {
                     "Ref": "env"
@@ -194,14 +182,14 @@
               ],
               "Resource": [
                 {
-                  "Ref": "storageuserInfoDbArn"
+                  "Ref": "storagerolebasedasboardcontentArn"
                 },
                 {
                   "Fn::Join": [
                     "/",
                     [
                       {
-                        "Ref": "storageuserInfoDbArn"
+                        "Ref": "storagerolebasedasboardcontentArn"
                       },
                       "index/*"
                     ]
@@ -211,59 +199,6 @@
             }
           ]
         }
-      }
-    },
-    "rolebasedasboardcontentTriggerPolicy": {
-      "DependsOn": [
-        "LambdaExecutionRole"
-      ],
-      "Type": "AWS::IAM::Policy",
-      "Properties": {
-        "PolicyName": "lambda-trigger-policy-rolebasedasboardcontent",
-        "Roles": [
-          {
-            "Ref": "LambdaExecutionRole"
-          }
-        ],
-        "PolicyDocument": {
-          "Version": "2012-10-17",
-          "Statement": [
-            {
-              "Effect": "Allow",
-              "Action": [
-                "dynamodb:DescribeStream",
-                "dynamodb:GetRecords",
-                "dynamodb:GetShardIterator",
-                "dynamodb:ListStreams"
-              ],
-              "Resource": [
-                {
-                  "Ref": "storagerolebasedasboardcontentStreamArn"
-                }
-              ]
-            }
-          ]
-        }
-      }
-    },
-    "rolebasedasboardcontentTrigger": {
-      "Type": "AWS::Lambda::EventSourceMapping",
-      "DependsOn": [
-        "rolebasedasboardcontentTriggerPolicy"
-      ],
-      "Properties": {
-        "BatchSize": 100,
-        "Enabled": true,
-        "EventSourceArn": {
-          "Ref": "storagerolebasedasboardcontentStreamArn"
-        },
-        "FunctionName": {
-          "Fn::GetAtt": [
-            "LambdaFunction",
-            "Arn"
-          ]
-        },
-        "StartingPosition": "LATEST"
       }
     }
   },

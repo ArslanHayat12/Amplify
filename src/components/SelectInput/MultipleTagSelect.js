@@ -9,7 +9,7 @@ const { Option } = Select
 export const MultipleTagSelect = (props) => {
     const [field, meta] = useField(props)
     const invalid = field['value'] && !field['value'].length && Boolean(meta.error && meta.touched)
-    const { options, width, disabled, setFieldValue, setFieldTouched } = props
+    const { options, width, disabled, setFieldValue, setFieldTouched,mode } = props
 
     function handleChange(value) {
         setFieldValue(field.name, value)
@@ -21,7 +21,7 @@ export const MultipleTagSelect = (props) => {
                 name={field.name}
                 value={field.value}
                 width={width}
-                mode="multiple"
+                mode={mode||"multiple"}
                 onBlur={() => setFieldTouched && setFieldTouched(field.name, true)}
                 onChange={handleChange}
                 tokenSeparators={[',']}

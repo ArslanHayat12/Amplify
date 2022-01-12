@@ -1,0 +1,16 @@
+{
+  "resourceName": "rolebasedasboardcontent",
+  "tableName": "rolebasedasboardcontent",
+  "partitionKey": {
+    "fieldName": "role",
+    "fieldType": "string"
+  },
+  "sortKey": {
+    "fieldName": "url",
+    "fieldType": "string"
+  },
+  "gsi": [],
+  "triggerFunctions": [
+    "amplifyapp5152cec3"
+  ]
+}

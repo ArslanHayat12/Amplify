@@ -1,46 +1,43 @@
 import React, { Fragment, useCallback, useMemo } from 'react'
 import { Formik } from 'formik'
 import { Button } from 'antd'
-import { useUserContext } from '../../context/UserAuthContext'
+import { useRoleBasedContext } from '../../context/RoleBasedContext'
 import { InputBox } from '../../components/Input/Input'
 import { LabelWithInputItem } from '../../components/LabelWithInputItem/LabelWithInputItem'
 import { MultipleTagSelect } from '../../components/SelectInput/MultipleTagSelect'
 import { showMessage } from '../../components/message'
-import { userFormValidation } from './validations'
+import { dashboardFormValidation } from './validations'
 import { UsersFormStyle } from './style'
 import { useAuthenticator } from "@aws-amplify/ui-react";
 import { API } from 'aws-amplify'
 
-export const UserForm = (props) => {
+export const DashboardForm = (props) => {
     const { formRef, handleCancel } = props
     const {
-        state: { currentUser },
+        state: { currentRole },
         dispatch
-    } = useUserContext()
+    } = useRoleBasedContext()
 
     const { user } = useAuthenticator()
 
     const data = {
-        name: '',
-        email: ''
+        role: '',
+        url: '',
+        dashboardId: ''
     }
-    const handleCreateUser = (values, resetForm) => {
-        const { email, name, role } = values
-        const addUser = (
+    const handleCreateRole = (values, resetForm) => {
+        const { role, url, dashboardId } = values
+        console.log(values)
+        const addRole = (
             async () => {
                 const data = {
-                    body: {
-                        name: name,
-                        email: email,
-                        role: role.join(),
-                        parentId: user.attributes.sub
-                    }
+                    body: { role, url, dashboardId }
                 }
                 try {
-                    await API.put('userInfo', "/addUser", data);
-                    const apiData = await API.get('userInfo', "/addUser");
-                    dispatch({ type: "SET_USERS_List", payload: apiData?.data?.Users || [], loggedInUserId: user.attributes.sub })
-                    showMessage('User created', 'success')
+                    await API.put('rolebase', "/dashboard-content", data);
+                    const apiData = await API.get('rolebase', "/dashboard-content");
+                    dispatch({ type: "SET_ROLES_LIST", payload: apiData?.Items || [] })
+                    showMessage('Role created', 'success')
                     resetForm()
                     handleCancel()
                 }
@@ -50,22 +47,21 @@ export const UserForm = (props) => {
 
             }
         )
-        addUser()
+        addRole()
     }
 
-    const handleEditUser = useCallback(
-        async (user, resetForm) => {
+    const handleEditRole = useCallback(
+        async (dashboardConent, resetForm) => {
+            const { role, url, dashboardId } = dashboardConent
             const data = {
-                body: {
-                    email: user.email,
-                    role: user.role.join()
-                }
+                body: { role, url, dashboardId }
             }
             try {
-                await API.put('userInfo', "/addUser/update", data);
-                const apiData = await API.get('userInfo', "/addUser");
-                dispatch({ type: "SET_USERS_List", payload: apiData?.data?.Users || [], loggedInUserId: user.attributes.sub })
-                showMessage('User Updated', 'success')
+                await API.put('rolebase', "/dashboard-content", data);
+
+                const apiData = await API.get('rolebase', "/dashboard-content");
+                dispatch({ type: "SET_ROLES_LIST", payload: apiData?.Items || [] })
+                showMessage('Role Updated', 'success')
                 resetForm()
                 handleCancel()
             }
@@ -73,40 +69,36 @@ export const UserForm = (props) => {
                 showMessage(`${err.error}`, 'error')
             }
         },
-        [currentUser]
+        [currentRole]
     )
+    console.log(currentRole)
 
     const cancelEdit = () => {
         dispatch({
-            type: 'SELECTED_USER',
-            currentUser: null
+            type: 'SELECTED_ROLE',
+            currentRole: null
         })
     }
 
-    const memoizedUserForm = useMemo(
+    const memoizedDashboardForm = useMemo(
         () => (
             <Formik
                 enableReinitialize
-                initialValues={currentUser ? currentUser : data}
+                initialValues={currentRole ? currentRole : data}
                 onSubmit={(values, { resetForm }) => {
-                    currentUser ? handleEditUser(values, resetForm) : handleCreateUser(values, resetForm)
+                    currentRole ? handleEditRole(values, resetForm) : handleCreateRole(values, resetForm)
                 }}
                 innerRef={formRef}
-                validationSchema={userFormValidation}
+                validationSchema={dashboardFormValidation}
                 validateOnChange={false}
             >
                 {({ values, setFieldValue, submitForm }) => (
                     <UsersFormStyle>
-                        <LabelWithInputItem label="User Name">
-                            <InputBox name="name" placeholder="Untitled" />
-                        </LabelWithInputItem>
-                        <LabelWithInputItem label="Email">
-                            <InputBox name="email" placeholder="Untitled" />
-                        </LabelWithInputItem>
                         <LabelWithInputItem label="Role(s)">
                             <MultipleTagSelect
                                 name="role"
                                 width="medium"
+                                mode="-"
                                 options={[
                                     { key: 'Admin', value: 'Admin' },
                                     { key: 'Practitioner', value: 'Practitioner' },
@@ -115,7 +107,12 @@ export const UserForm = (props) => {
                                 setFieldValue={setFieldValue}
                             />
                         </LabelWithInputItem>
-
+                        <LabelWithInputItem label="URL">
+                            <InputBox name="url" placeholder="URL" />
+                        </LabelWithInputItem>
+                        <LabelWithInputItem label="Dashboard Id">
+                            <InputBox name="dashboardId" placeholder="Id" />
+                        </LabelWithInputItem>
                         <div>
                             <Button
                                 onClick={() => {
@@ -124,7 +121,7 @@ export const UserForm = (props) => {
                             >
                                 SAVE
                             </Button>
-                            {currentUser && (
+                            {currentRole && (
                                 <Button onClick={cancelEdit}>
                                     Cancel
                                 </Button>
@@ -136,5 +133,5 @@ export const UserForm = (props) => {
         ),
         []
     )
-    return <Fragment>{memoizedUserForm}</Fragment>
+    return <Fragment>{memoizedDashboardForm}</Fragment>
 }

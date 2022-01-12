@@ -8,9 +8,9 @@ const initialState = {
         user: null,
         usersList: [],
         isLoading: false,
-        currentUser:null,
+        currentUser: null,
         role: {
-            practioner: 0,
+            practitioner: 0,
             business: 0,
             admin: 0
         }
@@ -34,17 +34,24 @@ const reducer = (state, action) => {
                 const email = user.Attributes.map(attribute => {
                     return attribute.Name === 'email' ? attribute.Value : null
                 }).filter(Boolean)[0]
+                const sub = user.Attributes.map(attribute => {
+                    return attribute.Name === 'sub' ? attribute.Value : null
+                }).filter(Boolean)[0]
                 const email_verified = user.Attributes.map(attribute => {
                     return attribute.Name === 'email_verified' ? attribute.Value : null
                 }).filter(Boolean)[0]
-                return { ...user, role: role || ['Admin'], email, email_verified }
+                const parentId = user.Attributes.map(attribute => {
+                    return attribute.Name === 'custom:parentId' ? attribute.Value : null
+                }).filter(Boolean)[0]
+                return { ...user, role: role || ['Admin'], email, email_verified, parentId,sub }
             })
-            const practioner = mappedData.filter(data => data.role?.includes("Practioner")).length;
-            const business = mappedData.filter(data => data.role?.includes("Business")).length;
-            const admin = mappedData.filter(data => data.role?.includes("Admin")).length;
+            const filteredData = mappedData.filter(userData => userData.parentId === action.loggedInUserId)
+            const practitioner = filteredData.filter(data => data.role?.includes("Practitioner")).length;
+            const business = filteredData.filter(data => data.role?.includes("Business")).length;
+            const admin = filteredData.filter(data => data.role?.includes("Admin")).length;
             return {
-                ...state, usersList: mappedData, role: {
-                    practioner,
+                ...state, usersList: filteredData, role: {
+                    practitioner,
                     business,
                     admin
                 }
@@ -52,12 +59,12 @@ const reducer = (state, action) => {
         }
         case 'UPDATE_USERS_LIST': {
             const mappedData = action.payload
-            const practioner = mappedData.role?.includes("Practioner") ? 1 : 0;
+            const practitioner = mappedData.role?.includes("Practitioner") ? 1 : 0;
             const business = mappedData.role?.includes("Business") ? 1 : 0;
             const admin = mappedData.role?.includes("Admin") ? 1 : 0;
             return {
                 ...state, usersList: [...state.usersList, mappedData], role: {
-                    practioner,
+                    practitioner,
                     business,
                     admin
                 }

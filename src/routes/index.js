@@ -39,7 +39,7 @@ export const Routes = () => {
                 {() => (
                     <Switch>
                         <PrivateRoutes {...defaultPrivateRoutesProps} path='/admin' component={Main} role='Admin' />
-                        <PrivateRoutes {...defaultPrivateRoutesProps} redirectPath="/practioner" path='/practioner' component={Main} role='Practioner' />
+                        <PrivateRoutes {...defaultPrivateRoutesProps} redirectPath="/practitioner" path='/practitioner' component={Main} role='Practitioner' />
                         <PrivateRoutes {...defaultPrivateRoutesProps} redirectPath="/business" path='/business' component={Main} role='Business' />
                         <PrivateRoutes {...defaultPrivateRoutesProps} redirectPath="/organization" path='/organization' component={Main} role='Organization' />
 

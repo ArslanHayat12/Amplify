@@ -7,7 +7,7 @@ export const initialSession = {
 }
 
 export const getRoleBasedRoutes = (role) => {
-    const isPractioner = role.includes("Practioner")
+    const isPractitioner = role.includes("Practitioner")
     const isBusiness = role.includes("Business")
     const isAdmin = role.includes("Admin")
     const isOrganization = role.includes("Organization")
@@ -15,10 +15,10 @@ export const getRoleBasedRoutes = (role) => {
     return {
         routes: [
             isAdmin && { name: 'Admin', path: '/admin', icon: <AreaChartOutlined /> },
-            (isAdmin||isPractioner) && { name: 'Practioner', path: '/practioner', icon: <AreaChartOutlined /> },
+            (isAdmin||isPractitioner) && { name: 'Practitioner', path: '/practitioner', icon: <AreaChartOutlined /> },
             (isAdmin||isBusiness) && { name: 'Business', path: '/business', icon: <AreaChartOutlined /> },
             (isAdmin||isOrganization) && { name: 'Organization', path: '/organization', icon: <AreaChartOutlined /> },
         ].filter(Boolean),
-        redirectPath: isAdmin ? '/admin' : isPractioner ? '/practioner' : isBusiness ? '/business' : '/organization'
+        redirectPath: isAdmin ? '/admin' : isPractitioner ? '/practitioner' : isBusiness ? '/business' : '/organization'
     }
 }

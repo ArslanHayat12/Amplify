@@ -197,6 +197,10 @@ app.put(path, function (req, res) {
       {
         Name: 'custom:role',
         Value: req.body?.role,
+      },
+      {
+        Name: "custom:parentId",
+        Value: req.body?.parentId
       }
     ]
   };

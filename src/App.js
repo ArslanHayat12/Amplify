@@ -1,16 +1,20 @@
 import React from 'react';
 import './App.css';
-import {UserAuthProvider} from "./context/UserAuthContext";
+import { UserAuthProvider } from "./context/UserAuthContext";
+import { RoleBasedContextProvider } from "./context/RoleBasedContext";
 import Main from './Main';
 
 function App() {
-  
+
   return (
-        <div className="App">
-          <UserAuthProvider>
-            <Main />
-          </UserAuthProvider>
-        </div>
+    <div className="App">
+
+      <RoleBasedContextProvider>
+        <UserAuthProvider>
+          <Main />
+        </UserAuthProvider>
+      </RoleBasedContextProvider>
+    </div >
   );
 }
 

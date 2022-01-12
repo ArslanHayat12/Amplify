@@ -13,3 +13,11 @@ export const userFormValidation = () => {
             .required('Minimum one role')
     })
 }
+
+export const dashboardFormValidation = () => {
+    return yup.object().shape({
+        url: yup.string().trim().required(REQUIRED),
+        dashboardId: yup.string().trim().required(REQUIRED),
+        role:yup.string().trim().required(REQUIRED),
+    })
+}
