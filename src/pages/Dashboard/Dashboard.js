@@ -5,6 +5,7 @@ import NavBar from "../../components/NavBar/NavBar";
 import SideBar from "../../components/SideBar/SideBar";
 import {Admin} from "../../pages/Admin/Admin";
 import {Organization} from "../../pages/Organization/Organization";
+import {DashboardView} from "../../pages/DashboardView/DashboardView";
 import { useSessionContext } from "../../context/SessionContext";
 import { getRoleBasedRoutes } from "../../models/session";
 import { Practitioner } from "../Practitioner/Practitioner";
@@ -28,6 +29,7 @@ export const Dashboard = () => {
   const [selectedKey, setSelectedKey] = useState("0");
   const changeSelectedKey = (event) => {
     const key = event.key;
+    console.log(routes[+key]?.path)
     setSelectedKey(key);
     setContentIndex(+key);
     history.push(routes[+key].path)
@@ -41,8 +43,10 @@ export const Dashboard = () => {
   );
 
   const project = () => {
+    console.log(topics[contentIndex])
     switch (topics&&topics.length&&topics[contentIndex]) {
       case "Admin": return   <Admin />;
+      case "Dashboard": return <DashboardView />;
       case "Practitioner": return <Practitioner />;
       case "Business": return <Business />;
       case "Organization": return <Organization />;

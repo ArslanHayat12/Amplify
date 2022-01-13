@@ -23,22 +23,24 @@ export const Routes = () => {
     const history = useHistory()
 
     async function checkAuthState() {
-      try {
-      await Auth.currentAuthenticatedUser()
-      } catch (err) {
-        history.push('/login')
-      }
+        try {
+            await Auth.currentAuthenticatedUser()
+        } catch (err) {
+            history.push('/login')
+        }
     }
     useEffect(() => {
-      checkAuthState()
-    },[sessionContext.isAuthenticated])
-    
+        checkAuthState()
+    }, [sessionContext.isAuthenticated])
+
     return (
         <div>
             <Authenticator>
                 {() => (
                     <Switch>
+                      
                         <PrivateRoutes {...defaultPrivateRoutesProps} path='/admin' component={Main} role='Admin' />
+                        <PrivateRoutes {...defaultPrivateRoutesProps} path='/dashboard'  redirectPath="/dashboard"component={Main} role='Dashboard' />
                         <PrivateRoutes {...defaultPrivateRoutesProps} redirectPath="/practitioner" path='/practitioner' component={Main} role='Practitioner' />
                         <PrivateRoutes {...defaultPrivateRoutesProps} redirectPath="/business" path='/business' component={Main} role='Business' />
                         <PrivateRoutes {...defaultPrivateRoutesProps} redirectPath="/organization" path='/organization' component={Main} role='Organization' />

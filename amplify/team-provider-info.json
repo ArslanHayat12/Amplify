@@ -37,7 +37,7 @@
         },
         "amplifyapp939e2ae7": {
           "deploymentBucketName": "amplify-amplifyapp-dev-100218-deployment",
-          "s3Key": "amplify-builds/amplifyapp939e2ae7-5436417a53783835616b-build.zip"
+          "s3Key": "amplify-builds/amplifyapp939e2ae7-485a785a744c4e53326b-build.zip"
         }
       }
     }

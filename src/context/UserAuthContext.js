@@ -57,6 +57,32 @@ const reducer = (state, action) => {
                 }
             };
         }
+
+        case 'SET_LOGGED_IN_USER': {
+            const mappedData = action.payload.map(user => {
+                const role = user.Attributes.map(attribute => {
+                    return attribute.Name === 'custom:role' ? attribute.Value.split(",") : null
+                }).filter(Boolean)[0]
+                const email = user.Attributes.map(attribute => {
+                    return attribute.Name === 'email' ? attribute.Value : null
+                }).filter(Boolean)[0]
+                const sub = user.Attributes.map(attribute => {
+                    return attribute.Name === 'sub' ? attribute.Value : null
+                }).filter(Boolean)[0]
+                const email_verified = user.Attributes.map(attribute => {
+                    return attribute.Name === 'email_verified' ? attribute.Value : null
+                }).filter(Boolean)[0]
+                const parentId = user.Attributes.map(attribute => {
+                    return attribute.Name === 'custom:parentId' ? attribute.Value : null
+                }).filter(Boolean)[0]
+                return { ...user, role: role || ['Admin'], email, email_verified, parentId,sub }
+            })
+            const filteredData = mappedData.find(userData => userData.sub === action.loggedInUserId)
+            return {
+                ...state, user: filteredData
+            };
+        }
+
         case 'UPDATE_USERS_LIST': {
             const mappedData = action.payload
             const practitioner = mappedData.role?.includes("Practitioner") ? 1 : 0;
