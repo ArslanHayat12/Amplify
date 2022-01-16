@@ -4,18 +4,15 @@ import { useAuthenticator, } from '@aws-amplify/ui-react';
 import '@aws-amplify/ui-react/styles.css';
 import { Dashboard } from './pages/Dashboard/Dashboard';
 import { useSessionContext } from './context/SessionContext';
-import { useHistory } from 'react-router-dom';
-import { getRoleBasedRoutes } from './models/session';
 
 function Main() {
-    const { user } = useAuthenticator()
+    const { user,_state:{value} } = useAuthenticator()
     const [session, setSession] = useSessionContext();
-    const history = useHistory();
 
     useEffect(() => {
-        setSession({ ...session, isAuthenticated: !!user, role: user.attributes?.['custom:role'] || 'Admin' });
-        history.push(getRoleBasedRoutes(user.attributes?.['custom:role'] || 'Admin')?.redirectPath);
-    }, [])
+        setSession({ ...session, isAuthenticated: value==="authenticated", role: user.attributes?.['custom:role'] || 'Admin' });
+    
+    }, [value,user])
     // eslint-disable-next-line no-undef
     return <Dashboard />;
 }

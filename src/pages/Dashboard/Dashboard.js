@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import { Layout } from "antd";
 import TopicMenu from "../../components/TopicMenu";
 import NavBar from "../../components/NavBar/NavBar";
@@ -24,12 +24,23 @@ export const Dashboard = () => {
 
   });
 
+  const topicsIndex = session&&getRoleBasedRoutes(session.role)?.routes?.map((route,index) => {
+    return(route.path===session.redirectPath)?index:''
+
+  }).filter(Number.isInteger);
+
+  const initialContentIndex=topicsIndex&&topicsIndex.length?topicsIndex[0]:0;
+
   const history=useHistory()
-  const [contentIndex, setContentIndex] = useState(0);
-  const [selectedKey, setSelectedKey] = useState("0");
+  const [contentIndex, setContentIndex] = useState(initialContentIndex);
+  const [selectedKey, setSelectedKey] = useState(initialContentIndex.toString());
+
+  useEffect(() => {
+  session.isAuthenticated&&history.push(session.redirectPath)
+  }, [session])
+
   const changeSelectedKey = (event) => {
     const key = event.key;
-    console.log(routes[+key]?.path)
     setSelectedKey(key);
     setContentIndex(+key);
     history.push(routes[+key].path)
@@ -43,7 +54,6 @@ export const Dashboard = () => {
   );
 
   const project = () => {
-    console.log(topics[contentIndex])
     switch (topics&&topics.length&&topics[contentIndex]) {
       case "Admin": return   <Admin />;
       case "Dashboard": return <DashboardView />;

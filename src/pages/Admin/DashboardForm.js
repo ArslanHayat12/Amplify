@@ -27,7 +27,6 @@ export const DashboardForm = (props) => {
     }
     const handleCreateRole = (values, resetForm) => {
         const { role, url, dashboardId } = values
-        console.log(values)
         const addRole = (
             async () => {
                 const data = {
@@ -71,7 +70,6 @@ export const DashboardForm = (props) => {
         },
         [currentRole]
     )
-    console.log(currentRole)
 
     const cancelEdit = () => {
         dispatch({

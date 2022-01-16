@@ -17,8 +17,8 @@ export const DashboardView=()=> {
         }
         getUser()
     }, [user])
-    
-    const url=rolesList?.find(role=>(state.user.role.includes(role.role)));
-    console.log(url?.url+"/"+url?.dashboardId,url)
+
+    const url=rolesList?.find(role=>(state.user?.role.includes(role?.role)));
+    url&&console.log(url?.url+"/"+url?.dashboardId,url)
     return <>DashboardView</>
 }

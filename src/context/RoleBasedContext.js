@@ -15,12 +15,10 @@ const initialState = {
 const RoleBasedContext = createContext(initialState);
 
 const reducer = (state, action) => {
-    console.log(action)
     switch (action.type) {
         case 'SELECTED_ROLE':
             return { ...state, currentRole: action.payload };
         case 'SET_ROLES_LIST': {
-            console.log(action)
             return {
                 ...state, rolesList: action.payload
             };

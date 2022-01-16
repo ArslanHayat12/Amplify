@@ -55,7 +55,6 @@ export const Admin = () => {
 
     const handleRoleEditModalForm = useCallback(
         (role) => {
-            console.log(role)
             dispatchRole({ type: "SELECTED_ROLE", payload: role })
             setIsDashboardModalVisible(true)
         },
