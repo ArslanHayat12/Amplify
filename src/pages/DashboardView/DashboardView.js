@@ -11,7 +11,6 @@ export const DashboardView=()=> {
         const getUser = async () => {
             dispatch({ type: "SET_LOADING", payload: true })
             const apiData = await API.get('userInfo', "/addUser");
-            console.log(apiData)
             dispatch({ type: "SET_LOGGED_IN_USER", payload: apiData?.data?.Users || [], loggedInUserId: user.attributes.sub })
             dispatch({ type: "SET_LOADING", payload: false })
         }
