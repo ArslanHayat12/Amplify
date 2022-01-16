@@ -1,7 +1,6 @@
 import PrivateRoutes from "./PrivateRoutes";
 import { useSessionContext } from "../context/SessionContext";
 import { Redirect, Route, Switch, useHistory } from 'react-router-dom';
-import { Login } from "../pages/Login/Login";
 import Main from "../Main";
 import { Authenticator } from "@aws-amplify/ui-react"
 import { Auth } from "aws-amplify";
