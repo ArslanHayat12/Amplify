@@ -188,13 +188,11 @@ export const Admin = () => {
     const deleteRole = (
         async () => {
             try {
-                await API.del('rolebase', "/dashboard-content/" + currentRole?.role);
+                await API.del('rolebase', "/dashboard-content/object/" + currentRole?.role+"/"+ currentRole?.url);
                 const apiData = await API.get('rolebase', "/dashboard-content");
                 dispatchRole({ type: "SET_ROLES_LIST", payload: apiData?.Items || [] })
-
-                showMessage('User Deleted', 'success')
-
-                setIsUserDeleteModalVisible(false)
+                showMessage('Role Deleted', 'success')
+                setIsRoleDeleteModalVisible(false)
             }
             catch (err) {
                 console.log(err)
