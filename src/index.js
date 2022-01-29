@@ -5,7 +5,13 @@ import reportWebVitals from './reportWebVitals';
 import { Routes } from './routes/';
 import { BrowserRouter } from "react-router-dom";
 import { SessionContextProvider } from './context/SessionContext';
+import Amplify from 'aws-amplify';
+import awsconfig from './aws-exports';
 
+Amplify.configure(awsconfig);
+
+// >>New - Configuring Auth Module
+// Auth.configure(awsconfig);
 ReactDOM.render(
   <React.StrictMode>
       <BrowserRouter>
