@@ -3,6 +3,7 @@ import { API } from 'aws-amplify'
 import React,{useEffect} from 'react'
 import { useRoleBasedContext } from '../../context/RoleBasedContext'
 import { useUserContext } from '../../context/UserAuthContext'
+import { getEmbededURL } from '../../utils'
 import { IFrameStyle } from './style'
 export const DashboardView=()=> {
     const { user } = useAuthenticator()
@@ -28,8 +29,6 @@ export const DashboardView=()=> {
         getUser()
     }, [user])
 
-    const url=rolesList?.find(role=>(role.role==='Business'));
-    console.log(state.user,rolesList)
-    url&&console.log(url?.url+url?.dashboardId,url)
-    return <IFrameStyle src="https://45165593c88d40849d9cd81b0862bfe1.ap-southeast-2.aws.found.io:9243/app/dashboards#/view/31ad4d40-796d-11ec-b275-070a29d78d3f?embed=true&_g=(filters%3A!()%2CrefreshInterval%3A(pause%3A!t%2Cvalue%3A0)%2Ctime%3A(from%3Anow-2y%2Cto%3Anow))&hide-filter-bar=true" ></IFrameStyle>
+    let adminUrl=rolesList?.find(role=>(role.role==='Admin'));
+    return <IFrameStyle src={getEmbededURL(adminUrl,user,Boolean(adminUrl))} ></IFrameStyle>
 }

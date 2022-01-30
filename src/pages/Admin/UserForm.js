@@ -22,10 +22,13 @@ export const UserForm = (props) => {
 
     const data = {
         name: '',
-        email: ''
+        email: '',
+        businessId: '',
+        clinikoUserId: '',
+        practitionerId: ''
     }
     const handleCreateUser = (values, resetForm) => {
-        const { email, name, role } = values
+        const { email, name, role, clinikoUserId, practitionerId, businessId } = values
         const addUser = (
             async () => {
                 const data = {
@@ -33,7 +36,10 @@ export const UserForm = (props) => {
                         name: name,
                         email: email,
                         role: role.join(),
-                        parentId: user.attributes.sub
+                        parentId: user.attributes.sub,
+                        clinikoUserId,
+                        practitionerId,
+                        businessId
                     }
                 }
                 try {
@@ -55,10 +61,14 @@ export const UserForm = (props) => {
 
     const handleEditUser = useCallback(
         async (user, resetForm) => {
+            const { clinikoUserId, practitionerId, businessId, email, role } = user;
             const data = {
                 body: {
-                    email: user.email,
-                    role: user.role.join()
+                    email,
+                    role: role.join(),
+                    clinikoUserId,
+                    practitionerId,
+                    businessId
                 }
             }
             try {
@@ -98,10 +108,10 @@ export const UserForm = (props) => {
                 {({ values, setFieldValue, submitForm }) => (
                     <UsersFormStyle>
                         <LabelWithInputItem label="User Name">
-                            <InputBox name="name" placeholder="Untitled" />
+                            <InputBox name="name" placeholder="User Name" />
                         </LabelWithInputItem>
                         <LabelWithInputItem label="Email">
-                            <InputBox name="email" placeholder="Untitled" />
+                            <InputBox name="email" placeholder="Email" />
                         </LabelWithInputItem>
                         <LabelWithInputItem label="Role(s)">
                             <MultipleTagSelect
@@ -115,6 +125,18 @@ export const UserForm = (props) => {
                                 setFieldValue={setFieldValue}
                             />
                         </LabelWithInputItem>
+                        {values.role?.includes("Practitioner") && <>
+                            <LabelWithInputItem label="Cliniko User ID">
+                                <InputBox name="clinikoUserId" placeholder="Cliniko User ID" />
+                            </LabelWithInputItem>
+                            <LabelWithInputItem label="Practitioner Id">
+                                <InputBox name="practitionerId" placeholder="Practitioner Id" />
+                            </LabelWithInputItem></>}
+
+                        {values.role?.includes("Business") &&
+                            <LabelWithInputItem label="Business Id">
+                                <InputBox name="businessId" placeholder="Business Id" />
+                            </LabelWithInputItem>}
 
                         <div>
                             <Button

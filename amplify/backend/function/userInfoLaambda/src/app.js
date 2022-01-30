@@ -201,6 +201,18 @@ app.put(path, function (req, res) {
       {
         Name: "custom:parentId",
         Value: req.body?.parentId
+      },
+      {
+        Name: "custom:businessId",
+        Value: req.body?.businessId
+      },
+      {
+        Name: "custom:clinikoUserId",
+        Value: req.body?.clinikoUserId
+      },
+      {
+        Name: "custom:practitionerId",
+        Value: req.body?.practitionerId
       }
     ]
   };
@@ -261,6 +273,18 @@ app.put(path + "/update", function (req, res) {
       {
         Name: 'custom:role',
         Value: req.body?.role,
+      },
+      {
+        Name: "custom:businessId",
+        Value: req.body?.businessId
+      },
+      {
+        Name: "custom:clinikoUserId",
+        Value: req.body?.clinikoUserId
+      },
+      {
+        Name: "custom:practitionerId",
+        Value: req.body?.practitionerId
       }
     ]
   };

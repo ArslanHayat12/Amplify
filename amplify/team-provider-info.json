@@ -25,7 +25,7 @@
       "function": {
         "userInfoLaambda": {
           "deploymentBucketName": "amplify-amplifyapp-dev-100218-deployment",
-          "s3Key": "amplify-builds/userInfoLaambda-593648784a5336375748-build.zip"
+          "s3Key": "amplify-builds/userInfoLaambda-4f474c32636b30464a45-build.zip"
         },
         "AdminQueries9f6f5db4": {
           "deploymentBucketName": "amplify-amplifyapp-dev-100218-deployment",

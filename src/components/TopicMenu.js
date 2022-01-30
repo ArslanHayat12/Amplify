@@ -12,7 +12,7 @@ const TopicMenu = ({ topics, selectedKey, changeSelectedKey }) => {
   );
 
   return (
-    <Menu mode="inline" selectedKeys={[selectedKey]}>
+    <Menu  theme="dark" mode="inline" selectedKeys={[selectedKey]}>
       {styledTopics}
     </Menu>
   );
