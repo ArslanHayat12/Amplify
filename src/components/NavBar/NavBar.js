@@ -3,7 +3,6 @@ import { Drawer, Button, Dropdown, Avatar } from "antd";
 import { MenuOutlined, UserOutlined } from "@ant-design/icons";
 import { NavbarStyle } from "./style";
 import TopicMenu from "../TopicMenu";
-import logo from "./../../logo.svg";
 import { useHistory } from "react-router-dom";
 
 import { useSessionContext } from '../../context/SessionContext';
@@ -30,9 +29,7 @@ const NavBar = ({ menu, signOut, user }) => {
         >
           {menu}
         </Drawer>
-        <a href="/">
-          <img src={logo} className="logo" alt="logo" />
-        </a>
+       
       </div>
       <div>
         

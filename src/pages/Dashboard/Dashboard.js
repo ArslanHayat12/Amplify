@@ -66,9 +66,11 @@ export const Dashboard = () => {
 
   return (
     <div className="App">
-      <NavBar menu={Menu} user={user} signOut={signOut}/>
+      {/* <NavBar menu={Menu} user={user} signOut={signOut}/> */}
       <Layout>
         <SideBar menu={Menu} />
+        <Layout>
+        <NavBar menu={Menu} user={user} signOut={signOut}/>
         <Layout.Content className="content">
           
       <RoleBasedContextProvider>
@@ -77,6 +79,7 @@ export const Dashboard = () => {
           </UserAuthProvider>
           </RoleBasedContextProvider>
         </Layout.Content>
+        </Layout>
       </Layout>
     </div>
   );
