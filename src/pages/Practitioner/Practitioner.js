@@ -32,8 +32,6 @@ export const Practitioner = () => {
     }, [user])
 
 //     const { isPractitioner } = getCustomRoleType(user.attributes['custom:role'])
-// console.log(isPractitioner)
     const practitionerUrl = rolesList?.find(role => (role.role.includes('Practitioner')));
-    // console.log(practitionerUrl)
     return !user ? 'Loading...' : <IFrameStyle src={getEmbededURL(practitionerUrl, user, false)} onLoad={() => 'Loading'} ></IFrameStyle>
 }
