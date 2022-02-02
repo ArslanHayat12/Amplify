@@ -30,5 +30,7 @@ export const DashboardView=()=> {
     }, [user])
 
     let adminUrl=rolesList?.find(role=>(role.role==='Admin'));
+    console.log(getEmbededURL(adminUrl,user,Boolean(adminUrl)))
+  
     return <IFrameStyle src={getEmbededURL(adminUrl,user,Boolean(adminUrl))} ></IFrameStyle>
 }

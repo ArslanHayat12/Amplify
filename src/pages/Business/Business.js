@@ -1,15 +1,15 @@
 import { useAuthenticator } from '@aws-amplify/ui-react'
 import { API } from 'aws-amplify'
-import React,{useEffect} from 'react'
+import React, { useEffect } from 'react'
 import { useRoleBasedContext } from '../../context/RoleBasedContext'
 import { useUserContext } from '../../context/UserAuthContext'
-import { getEmbededURL } from '../../utils'
+import { getCustomRoleType, getEmbededURL } from '../../utils'
 import { IFrameStyle } from './style'
-export const Business=()=> {
+export const Business = () => {
     const { user } = useAuthenticator()
-    const {dispatch:dispatchRole,state:{rolesList}}=useRoleBasedContext()
-    const {dispatch}=useUserContext()
-   
+    const { dispatch: dispatchRole, state: { rolesList } } = useRoleBasedContext()
+    const { dispatch } = useUserContext()
+
     useEffect(() => {
         const getRoles = async () => {
             dispatchRole({ type: "SET_LOADING", payload: true })
@@ -17,7 +17,7 @@ export const Business=()=> {
             dispatchRole({ type: "SET_ROLES_LIST", payload: apiData?.Items || [] })
             dispatchRole({ type: "SET_LOADING", payload: false })
         }
-        !rolesList&&getRoles()
+        !rolesList && getRoles()
     }, [])
 
     useEffect(() => {
@@ -30,7 +30,7 @@ export const Business=()=> {
         getUser()
     }, [user])
 
-    const adminUrl=rolesList?.find(role=>(role.role==='Admin'));
-    const businessUrl=rolesList?.find(role=>(role.role==='Business'));
-    return !user?'Please Wait':<IFrameStyle src={getEmbededURL(adminUrl||businessUrl,user,Boolean(adminUrl),Boolean(businessUrl))} ></IFrameStyle>
+    // const {isBusiness} = getCustomRoleType(user.attributes['custom:role'])
+    const businessUrl = rolesList?.find(role => (role.role.includes( "Business")));
+    return !user ? 'Please Wait' : <IFrameStyle src={getEmbededURL(businessUrl, user, null, Boolean(businessUrl))} ></IFrameStyle>
 }

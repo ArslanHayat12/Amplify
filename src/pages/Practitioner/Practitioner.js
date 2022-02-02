@@ -1,16 +1,16 @@
 import { useAuthenticator } from '@aws-amplify/ui-react'
 import { API } from 'aws-amplify'
-import React,{useEffect, useMemo,Suspense} from 'react'
+import React, { useEffect, useMemo, Suspense } from 'react'
 import { useRoleBasedContext } from '../../context/RoleBasedContext'
 import { useUserContext } from '../../context/UserAuthContext'
 
-import { getEmbededURL } from '../../utils/'
+import { getCustomRoleType, getEmbededURL } from '../../utils/'
 import { IFrameStyle } from './style'
-export const Practitioner=()=> {
+export const Practitioner = () => {
     const { user } = useAuthenticator()
-    const {dispatch:dispatchRole,state:{rolesList}}=useRoleBasedContext()
-    const {dispatch}=useUserContext()
-   
+    const { dispatch: dispatchRole, state: { rolesList } } = useRoleBasedContext()
+    const { dispatch } = useUserContext()
+
     useEffect(() => {
         const getRoles = async () => {
             dispatchRole({ type: "SET_LOADING", payload: true })
@@ -18,7 +18,7 @@ export const Practitioner=()=> {
             dispatchRole({ type: "SET_ROLES_LIST", payload: apiData?.Items || [] })
             dispatchRole({ type: "SET_LOADING", payload: false })
         }
-        !rolesList&&getRoles()
+        !rolesList && getRoles()
     }, [])
 
     useEffect(() => {
@@ -31,8 +31,9 @@ export const Practitioner=()=> {
         getUser()
     }, [user])
 
-    let adminUrl=rolesList?.find(role=>(role.role==='Admin'));
-    let practitionerUrl=rolesList?.find(role=>(role.role==='Practitioner'));
-
-    return !user? 'Loading...': <IFrameStyle src={getEmbededURL(adminUrl||practitionerUrl,user,Boolean(adminUrl))} onLoad={()=>'Loading'} ></IFrameStyle>
+//     const { isPractitioner } = getCustomRoleType(user.attributes['custom:role'])
+// console.log(isPractitioner)
+    const practitionerUrl = rolesList?.find(role => (role.role.includes('Practitioner')));
+    // console.log(practitionerUrl)
+    return !user ? 'Loading...' : <IFrameStyle src={getEmbededURL(practitionerUrl, user, false)} onLoad={() => 'Loading'} ></IFrameStyle>
 }
