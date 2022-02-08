@@ -1,4 +1,4 @@
-import React, { Fragment, useCallback, useMemo } from 'react'
+import React, { Fragment, useCallback, useEffect, useMemo, useState } from 'react'
 import { Formik } from 'formik'
 import { Button } from 'antd'
 import { useUserContext } from '../../context/UserAuthContext'
@@ -13,12 +13,16 @@ import { API } from 'aws-amplify'
 
 export const UserForm = (props) => {
     const { formRef, handleCancel } = props
+    const [practitioners, setPractitioners] = useState([])
+    const [value, setValue] = useState()
+    const [selectedObject, setSelectedObject] = useState()
     const {
         state: { currentUser },
         dispatch
     } = useUserContext()
 
     const { user } = useAuthenticator()
+
 
     const data = {
         name: '',
@@ -27,6 +31,37 @@ export const UserForm = (props) => {
         clinikoUserId: '',
         practitionerId: ''
     }
+
+    useEffect(() => {
+        const getClinikoUsers = async () => {
+            const users = await API.get('userInfo', "/addUser/clinikoUsers");
+            setPractitioners(users.practitioners)
+        }
+        getClinikoUsers()
+
+    }, [])
+    const practitionersOptions = practitioners.map(practitioner => ({ key: practitioner.practitionerId, value: practitioner.full_name }))
+
+    useEffect(() => {
+        const selectedObject = practitioners.find(practitioner => practitioner.practitionerId === value);
+        if (formRef.current) {
+            const isPractitioner = formRef.current.values.role?.includes("Practitioner")
+            formRef.current.setFieldValue(
+                "email",
+                isPractitioner ? selectedObject?.email : ''
+            );
+            formRef.current.setFieldValue(
+                "practitionerId",
+                isPractitioner ? selectedObject?.practitionerId : ''
+            );
+            formRef.current.setFieldValue(
+                "clinikoUserId",
+                isPractitioner ? selectedObject?.id : ''
+            );
+        }
+        setSelectedObject(selectedObject)
+    }, [value, JSON.stringify(formRef.current)])
+
     const handleCreateUser = (values, resetForm) => {
         const { email, name, role, clinikoUserId, practitionerId, businessId } = values
         const addUser = (
@@ -110,8 +145,11 @@ export const UserForm = (props) => {
                         <LabelWithInputItem label="User Name">
                             <InputBox name="name" placeholder="User Name" />
                         </LabelWithInputItem>
+
                         <LabelWithInputItem label="Email">
-                            <InputBox name="email" placeholder="Email" />
+                            <InputBox name="email" placeholder="Email"
+                                disabled={values.role?.length >= 1 && values.role?.includes("Practitioner")}
+                            />
                         </LabelWithInputItem>
                         <LabelWithInputItem label="Role(s)">
                             <MultipleTagSelect
@@ -122,15 +160,37 @@ export const UserForm = (props) => {
                                     { key: 'Practitioner', value: 'Practitioner' },
                                     { key: 'Business', value: 'Business' }
                                 ]}
-                                setFieldValue={setFieldValue}
+                                onChange={
+                                    (value) => {
+                                        setFieldValue("role", value)
+                                        setValue('')
+                                    }
+                                }
                             />
                         </LabelWithInputItem>
                         {values.role?.includes("Practitioner") && <>
+                            <LabelWithInputItem label="Practitioners">
+                                <MultipleTagSelect
+                                    name="selected"
+                                    width="medium"
+                                    mode="-"
+                                    options={practitionersOptions}
+                                    setFieldValue={setFieldValue}
+                                    onChange={
+                                        (value) => {
+                                            setValue(value)
+                                        }
+                                    }
+
+                                />
+                            </LabelWithInputItem>
                             <LabelWithInputItem label="Cliniko User ID">
-                                <InputBox name="clinikoUserId" placeholder="Cliniko User ID" />
+                                <InputBox name="clinikoUserId" placeholder="Cliniko User ID" disabled={true} />
                             </LabelWithInputItem>
                             <LabelWithInputItem label="Practitioner Id">
-                                <InputBox name="practitionerId" placeholder="Practitioner Id" />
+                                <InputBox name="practitionerId" placeholder="Practitioner Id"
+
+                                    disabled={true} />
                             </LabelWithInputItem></>}
 
                         {values.role?.includes("Business") &&
@@ -156,7 +216,7 @@ export const UserForm = (props) => {
                 )}
             </Formik>
         ),
-        []
+        [practitionersOptions]
     )
     return <Fragment>{memoizedUserForm}</Fragment>
 }

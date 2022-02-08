@@ -5,7 +5,7 @@ import { InputBoxStyle } from './style'
 export const InputBox = (props) => {
     const [field, meta] = useField(props)
     const invalid = Boolean(meta.error && meta.touched)
-    const { placeholder, width, suffix, rounded, disabled } = props
+    const { placeholder, width, suffix, rounded, disabled,value } = props
 
     return (
         <Fragment>
@@ -18,7 +18,7 @@ export const InputBox = (props) => {
                 disabled={disabled}
                 onBlur={field.onBlur}
                 onChange={field.onChange}
-                value={field.value}
+                value={value||field.value}
                 error={invalid ? invalid : undefined}
             />
             {invalid && <span className="error-message">{meta.error}</span>}

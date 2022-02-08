@@ -12,6 +12,7 @@ const AWS = require('aws-sdk')
 var awsServerlessExpressMiddleware = require('aws-serverless-express/middleware')
 var bodyParser = require('body-parser')
 var express = require('express')
+var cors = require('cors')
 
 AWS.config.update({ region: process.env.TABLE_REGION });
 
@@ -43,6 +44,14 @@ app.use(function (req, res, next) {
   res.header("Access-Control-Allow-Headers", "*")
   next()
 });
+
+
+const corsOptions = {
+  origin: '*',
+  methods: ['POST', 'GET', 'PATCH', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization']
+}
+app.use(cors(corsOptions));
 // convert url string param to expected Type
 const convertUrlType = (param, type) => {
   switch (type) {
@@ -52,6 +61,64 @@ const convertUrlType = (param, type) => {
       return param;
   }
 }
+/********************************
+ * HTTP Get method for list objects *
+ ********************************/
+
+app.get(path + '/clinikoUsers', function (req, res) {
+  const getPractitioners = async () => {
+    try {
+      const practionerData = await require("@pipedreamhq/platform").axios(this, {
+        url: `https://api.au1.cliniko.com/v1/practitioners  `,
+        headers: {
+          "User-Agent": `Pipedream (support@pipedream.com)`,
+          "Accept": `application/json`,
+        },
+        auth: {
+          username: `MS0yOTgyNC1HeUlOTlRlbEdNRjlhbHY5dGRZeU8zTFdHN09rT2hscg-au1`,
+          password: ``,
+        },
+      })
+
+      const practitioners = practionerData.practitioners.map(async (practitioner) => {
+
+        const user = await require("@pipedreamhq/platform").axios(this, {
+          url: `${practitioner.user.links.self}`,
+          headers: {
+            "User-Agent": `Pipedream (support@pipedream.com)`,
+            "Accept": `application/json`,
+          },
+          auth: {
+            username: `MS0yOTgyNC1HeUlOTlRlbEdNRjlhbHY5dGRZeU8zTFdHN09rT2hscg-au1`,
+            password: ``,
+          },
+        })
+        return ({
+          ...practitioner,
+          practitionerId: practitioner.id,
+          ...user
+        })
+      })
+      const practionerList = await Promise.all(practitioners)
+      const practionerMappedList = practionerList.map((user => ({
+        id: user.id,
+        first_name: user.first_name,
+        last_name: user.last_name,
+        full_name: user.first_name + ' ' + user.last_name,
+        email: user.email,
+        role: user.role,
+        practitionerId: user.practitionerId
+      })))
+      res.json({ practitioners: practionerMappedList });
+    } catch (err) {
+      res.statusCode = 500;
+      res.json({ error: 'Error ' + err });
+    }
+
+
+  }
+  getPractitioners()
+})
 
 /********************************
  * HTTP Get method for list objects *
