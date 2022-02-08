@@ -1,8 +1,7 @@
 export const getEmbededURL = (url, user, isAdmin, isBusiness) => {
-
-    const filter = isAdmin ? '' : isBusiness ? `business.keyword=${user.attributes['custom:businessId']}` : `practioner.keyword=${user.attributes['custom:practitionerId']}`
-
-    return url && `${url.url + url.dashboardId}?embed=true&_g=(filters%3A!(${filter})%2CrefreshInterval%3A(pause%3A!t%2Cvalue%3A0)%2Ctime%3A(from%3Anow-2y%2Cto%3Anow))&hide-filter-bar=true`
+    const practitionerId = user.attributes['custom:practitionerId']
+    const filter = isAdmin ? '' : isBusiness ? `business.keyword:${user.attributes['custom:businessId']}` : `practitioner.keyword:${practitionerId}`
+    return generatedUrl(url, filter)
 
 }
 
@@ -17,4 +16,11 @@ export const getCustomRoleType = (customRole) => {
     }
 
     return { isBusiness, isPractitioner, isAdmin }
+}
+
+export const generatedUrl = (url, filter) => {
+
+    return url && `${url.url + url.dashboardId}?embed=true&_g=(filters:!((meta:(index:'90bf3f10-5e50-11ec-b275-070a29d78d3f',key:practitioner.keyword,negate:!f,type:phrase),
+query:(match_phrase:(${filter}))))%2CrefreshInterval%3A(pause%3A!t%2Cvalue%3A0)%2Ctime%3A(from%3Anow-4y%2Cto%3Anow))&show-time-filter=true&hide-filter-bar=true`
+
 }
