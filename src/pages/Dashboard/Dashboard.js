@@ -4,7 +4,7 @@ import TopicMenu from "../../components/TopicMenu";
 import NavBar from "../../components/NavBar/NavBar";
 import SideBar from "../../components/SideBar/SideBar";
 import {Admin} from "../../pages/Admin/Admin";
-import {Organization} from "../../pages/Organization/Organization";
+import {Organizations} from "../../pages/Organizations/Organizations";
 import {DashboardView} from "../../pages/DashboardView/DashboardView";
 import { useSessionContext } from "../../context/SessionContext";
 import { getRoleBasedRoutes } from "../../models/session";
@@ -60,7 +60,7 @@ export const Dashboard = () => {
       case "Dashboard": return <DashboardView />;
       case "Practitioner": return <Practitioner />;
       case "Business": return <Business />;
-      case "Organization": return <Organization />;
+      case "Organizations": return <Organizations />;
       default: return <h1>No project match</h1>
     }
   }
