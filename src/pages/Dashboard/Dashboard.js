@@ -36,7 +36,6 @@ export const Dashboard = () => {
   const [selectedKey, setSelectedKey] = useState(initialContentIndex.toString());
 
   useEffect(() => {
-    console.log(session)
   session.isAuthenticated&&history.push(session.redirectPath)
   }, [session])
 

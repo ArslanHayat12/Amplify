@@ -16,6 +16,7 @@ export const UserForm = (props) => {
     const [practitioners, setPractitioners] = useState([])
     const [value, setValue] = useState()
     const [selectedObject, setSelectedObject] = useState()
+    const [businesses, setBusiness] = useState([])
     const {
         state: { currentUser },
         dispatch
@@ -40,7 +41,19 @@ export const UserForm = (props) => {
         getClinikoUsers()
 
     }, [])
+
+
+    useEffect(() => {
+        const getclinikoBusinesses = async () => {
+            const businesses = await API.get('userInfo', "/addUser/clinikoBusinesses");
+            setBusiness(businesses.businesses)
+        }
+        getclinikoBusinesses()
+
+    }, [])
     const practitionersOptions = practitioners.map(practitioner => ({ key: practitioner.practitionerId, value: practitioner.full_name }))
+
+    const businessOptions = businesses.map(business => ({ key: business.id, value: business.business }))
 
     useEffect(() => {
         const selectedObject = practitioners.find(practitioner => practitioner.practitionerId === value);
@@ -61,6 +74,25 @@ export const UserForm = (props) => {
         }
         setSelectedObject(selectedObject)
     }, [value, JSON.stringify(formRef.current)])
+
+    
+    useEffect(() => {
+        const selectedObject = businesses.find(business => business.id === value);
+        if (formRef.current) {
+            const isBusiness = formRef.current.values.role?.includes("Business")
+            formRef.current.setFieldValue(
+                "email",
+                isBusiness ? selectedObject?.email : formRef.current.values.email
+            );
+            
+            formRef.current.setFieldValue(
+                "businessId",
+                isBusiness ? selectedObject?.id : ''
+            );
+          
+        }
+        setSelectedObject(selectedObject)
+    }, [value, JSON.stringify(formRef.current),businesses])
 
     const handleCreateUser = (values, resetForm) => {
         const { email, name, role, clinikoUserId, practitionerId, businessId } = values
@@ -148,7 +180,8 @@ export const UserForm = (props) => {
 
                         <LabelWithInputItem label="Email">
                             <InputBox name="email" placeholder="Email"
-                                disabled={values.role?.length >= 1 && values.role?.includes("Practitioner")}
+                                disabled={values.role?.length >= 1 && (values.role?.includes("Practitioner")
+                                    || values.role?.includes("Business"))}
                             />
                         </LabelWithInputItem>
                         <LabelWithInputItem label="Role(s)">
@@ -194,9 +227,25 @@ export const UserForm = (props) => {
                             </LabelWithInputItem></>}
 
                         {values.role?.includes("Business") &&
-                            <LabelWithInputItem label="Business Id">
-                                <InputBox name="businessId" placeholder="Business Id" />
-                            </LabelWithInputItem>}
+                            <><LabelWithInputItem label="Businesses">
+                                <MultipleTagSelect
+                                    name="businessSelected"
+                                    width="medium"
+                                    mode="-"
+                                    options={businessOptions}
+                                    setFieldValue={setFieldValue}
+                                    onChange={
+                                        (value) => {
+                                            setValue(value)
+                                        }
+                                    }
+
+
+                                />
+                            </LabelWithInputItem>
+                                <LabelWithInputItem label="Business Id">
+                                    <InputBox name="businessId" placeholder="Business Id" disabled={true} />
+                                </LabelWithInputItem></>}
 
                         <div>
                             <Button

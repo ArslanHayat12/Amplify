@@ -170,7 +170,7 @@ export const Admin = () => {
             try {
                 await API.del('userInfo', "/addUser/" + state.currentUser?.name);
                 const apiData = await API.get('userInfo', "/addUser");
-                dispatch({ type: "SET_USERS_List", payload: apiData?.data?.Users || [] })
+                dispatch({ type: "SET_USERS_List", payload: apiData?.data?.Users || [], loggedInUserId: user.attributes.sub  })
 
                 showMessage('User Deleted', 'success')
 
