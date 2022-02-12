@@ -61,6 +61,7 @@ const convertUrlType = (param, type) => {
       return param;
   }
 }
+
 /********************************
  * HTTP Get method for list objects *
  ********************************/
@@ -119,6 +120,42 @@ app.get(path + '/clinikoUsers', function (req, res) {
   }
   getPractitioners()
 })
+
+
+
+/********************************
+ * HTTP Get method for list objects *
+ ********************************/
+
+app.get(path + '/clinikoBusinesses', function (req, res) {
+  const getBusinesses = async () => {
+    try {
+      const businessesData = await require("@pipedreamhq/platform").axios(this, {
+        url: `https://api.au1.cliniko.com/v1/businesses  `,
+        headers: {
+          "User-Agent": `Pipedream (support@pipedream.com)`,
+          "Accept": `application/json`,
+        },
+        auth: {
+          username: `MS0yOTgyNC1HeUlOTlRlbEdNRjlhbHY5dGRZeU8zTFdHN09rT2hscg-au1`,
+          password: ``,
+        },
+      })
+      const businesses = businessesData.businesses.map((business => ({
+        id: business.id,
+        business: business.business_name,
+        email: business.email_reply_to
+      })))
+      res.json({ businesses });
+    } catch (err) {
+      res.statusCode = 500;
+      res.json({ error: 'Error ' + err });
+    }
+  }
+  getBusinesses()
+
+})
+
 
 /********************************
  * HTTP Get method for list objects *
