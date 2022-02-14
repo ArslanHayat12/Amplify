@@ -6,3 +6,8 @@ export const SidebarStyle = styled(Layout.Sider)`
     margin-right: 24px;
 }
 `
+
+export const LogoStyle = styled.a`
+display:flex;
+justify-content:center;
+`

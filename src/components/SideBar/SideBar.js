@@ -2,6 +2,7 @@ import React from "react";
 import { Layout } from "antd";
 
 import logo from "./../../logo.png";
+import { LogoStyle } from "./style";
 const SideBar = ({ menu }) => {
   return (
     <Layout.Sider
@@ -11,10 +12,10 @@ const SideBar = ({ menu }) => {
       collapsedWidth={0}
       trigger={null}
     >
-      <a href="/">
-        <img src={logo} className="logo" alt="logo" height="60" width='200'
+      <LogoStyle href="/">
+        <img src={logo} className="logo" alt="logo" height="60" width='100'
         />
-      </a>
+      </LogoStyle>
       {menu}
     </Layout.Sider>
   );
