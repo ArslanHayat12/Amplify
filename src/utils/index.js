@@ -1,7 +1,11 @@
 export const getEmbededURL = (url, user, isAdmin, isBusiness) => {
     const practitionerId = user.attributes['custom:practitionerId']
-    const filter = isAdmin ? '' : isBusiness ? `business.keyword:${user.attributes['custom:businessId']}` : `practitioner.keyword:${practitionerId}`
-    return generatedUrl(url, filter)
+    const businessId = user.attributes['custom:businessId']
+
+    const filter = isAdmin ? '' : isBusiness ? `business.keyword:${businessId}` : `practitioner.keyword:${practitionerId}`
+
+    const key = isAdmin ? '' : isBusiness ? `business.keyword` : `practitioner.keyword`
+    return generatedUrl(url, filter, key)
 
 }
 
@@ -18,9 +22,9 @@ export const getCustomRoleType = (customRole) => {
     return { isBusiness, isPractitioner, isAdmin }
 }
 
-export const generatedUrl = (url, filter) => {
+export const generatedUrl = (url, filter, key) => {
 
-    return url && `${url.url + url.dashboardId}?embed=true&_g=(filters:!((meta:(index:'90bf3f10-5e50-11ec-b275-070a29d78d3f',key:practitioner.keyword,negate:!f,type:phrase),
+    return url && `${url.url + url.dashboardId}?embed=true&_g=(filters:!((meta:(index:'90bf3f10-5e50-11ec-b275-070a29d78d3f',key:${key},negate:!f,type:phrase),
 query:(match_phrase:(${filter}))))%2CrefreshInterval%3A(pause%3A!t%2Cvalue%3A0)%2Ctime%3A(from%3Anow-4y%2Cto%3Anow))&show-time-filter=true&hide-filter-bar=true`
 
 }
