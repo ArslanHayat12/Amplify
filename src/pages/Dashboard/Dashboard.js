@@ -59,7 +59,7 @@ export const Dashboard = () => {
       case "Dashboard": return <DashboardView />;
       case "Practitioner": return <Practitioner />;
       case "Business": return <Business />;
-      case "Organizations": return <Organizations />;
+      // case "Organizations": return <Organizations />;
       default: return <h1>No project match</h1>
     }
   }
