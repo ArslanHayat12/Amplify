@@ -1,15 +1,20 @@
 import { useAuthenticator } from '@aws-amplify/ui-react'
 import { API } from 'aws-amplify'
-import React, { useEffect, useMemo, Suspense } from 'react'
+import React, { useEffect, useState } from 'react'
+import { SimpleSelect } from '../../components/SelectInput/SimpleSelect'
 import { useRoleBasedContext } from '../../context/RoleBasedContext'
 import { useUserContext } from '../../context/UserAuthContext'
 
 import { getCustomRoleType, getEmbededURL } from '../../utils/'
-import { IFrameStyle } from './style'
+import { IFrameStyle, PractitionerFormStyle } from './style'
 export const Practitioner = () => {
+    const [practitioners, setPractitioners] = useState([])
+    const [value, setValue] = useState()
     const { user } = useAuthenticator()
     const { dispatch: dispatchRole, state: { rolesList } } = useRoleBasedContext()
     const { dispatch } = useUserContext()
+    const { isAdmin } = getCustomRoleType(user.attributes['custom:role'])
+    const practitionersOptions = practitioners.map(practitioner => ({ key: practitioner.practitionerId, value: practitioner.full_name }))
 
     useEffect(() => {
         const getRoles = async () => {
@@ -22,6 +27,15 @@ export const Practitioner = () => {
     }, [])
 
     useEffect(() => {
+        const getClinikoUsers = async () => {
+            const users = await API.get('userInfo', "/addUser/clinikoUsers");
+            setPractitioners(users.practitioners)
+        }
+        isAdmin && getClinikoUsers()
+
+    }, [isAdmin])
+
+    useEffect(() => {
         const getUser = async () => {
             dispatch({ type: "SET_LOADING", payload: true })
             const apiData = await API.get('userInfo', "/addUser");
@@ -31,7 +45,21 @@ export const Practitioner = () => {
         getUser()
     }, [user])
 
-//     const { isPractitioner } = getCustomRoleType(user.attributes['custom:role'])
     const practitionerUrl = rolesList?.find(role => (role.role.includes('Practitioner')));
-    return !user ? 'Loading...' : <IFrameStyle src={getEmbededURL(practitionerUrl, user, false)} onLoad={() => 'Loading'} frameBorder={0}></IFrameStyle>
+    return !user ? 'Loading...' : <>{isAdmin &&
+        <PractitionerFormStyle>
+            <SimpleSelect
+                name="practitionerSelected"
+                width="medium"
+                mode="-"
+                options={practitionersOptions}
+                placeholder="Select Practitioner"
+                onChange={
+                    (value) => {
+                        setValue(value)
+                    }
+                }
+
+
+            /></PractitionerFormStyle>}<IFrameStyle key={value} src={getEmbededURL(practitionerUrl, user, false, false, isAdmin ? value : '')} onLoad={() => 'Loading'} frameBorder={0}></IFrameStyle></>
 }

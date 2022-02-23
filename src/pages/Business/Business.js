@@ -1,14 +1,22 @@
 import { useAuthenticator } from '@aws-amplify/ui-react'
 import { API } from 'aws-amplify'
-import React, { useEffect } from 'react'
+import { setNestedObjectValues } from 'formik'
+import React, { useEffect, useMemo, useState } from 'react'
+import { SimpleSelect } from '../../components/SelectInput/SimpleSelect'
 import { useRoleBasedContext } from '../../context/RoleBasedContext'
 import { useUserContext } from '../../context/UserAuthContext'
 import { getCustomRoleType, getEmbededURL } from '../../utils'
-import { IFrameStyle } from './style'
+import { BusinessFormStyle, IFrameStyle } from './style'
 export const Business = () => {
+    const [businesses, setBusiness] = useState([])
     const { user } = useAuthenticator()
     const { dispatch: dispatchRole, state: { rolesList } } = useRoleBasedContext()
     const { dispatch } = useUserContext()
+    const { isAdmin } = getCustomRoleType(user.attributes['custom:role'])
+    const businessOptions = businesses.map(business => ({ key: business.id, value: business.business }))
+    const [value, setValue] = useState()
+
+
 
     useEffect(() => {
         const getRoles = async () => {
@@ -21,6 +29,15 @@ export const Business = () => {
     }, [])
 
     useEffect(() => {
+        const getclinikoBusinesses = async () => {
+            const businesses = await API.get('userInfo', "/addUser/clinikoBusinesses");
+            setBusiness(businesses.businesses)
+        }
+        isAdmin && getclinikoBusinesses()
+
+    }, [isAdmin])
+
+    useEffect(() => {
         const getUser = async () => {
             dispatch({ type: "SET_LOADING", payload: true })
             const apiData = await API.get('userInfo', "/addUser");
@@ -30,7 +47,25 @@ export const Business = () => {
         getUser()
     }, [user])
 
-    // const {isBusiness} = getCustomRoleType(user.attributes['custom:role'])
-    const businessUrl = rolesList?.find(role => (role.role.includes( "Business")));
-    return !user ? 'Please Wait' : <IFrameStyle src={getEmbededURL(businessUrl, user, null, Boolean(businessUrl))} ></IFrameStyle>
+    const businessUrl = rolesList?.find(role => (role.role.includes("Business")));
+
+   
+    return !user ? 'Please Wait' : <>{isAdmin &&
+        <BusinessFormStyle>
+        <SimpleSelect
+            name="businessSelected"
+            width="medium"
+            mode="-"
+            options={businessOptions}
+            placeholder="Select Business"
+            onChange={
+                (value) => {
+                    setValue(value)
+                }
+            }
+
+
+        /></BusinessFormStyle>}
+          <IFrameStyle key={value} src={getEmbededURL(businessUrl, user, null, Boolean(businessUrl), isAdmin?value:'')} ></IFrameStyle>
+    </>
 }

@@ -1,6 +1,6 @@
-export const getEmbededURL = (url, user, isAdmin, isBusiness) => {
-    const practitionerId = user.attributes['custom:practitionerId']
-    const businessId = user.attributes['custom:businessId']
+export const getEmbededURL = (url, user, isAdmin, isBusiness, value) => {
+    const practitionerId = value || user.attributes['custom:practitionerId']
+    const businessId =  value || user.attributes['custom:businessId']
 
     const filter = isAdmin ? '' : isBusiness ? `business.keyword:${businessId}` : `practitioner.keyword:${practitionerId}`
 
