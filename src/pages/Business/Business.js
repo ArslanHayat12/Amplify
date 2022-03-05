@@ -1,7 +1,6 @@
 import { useAuthenticator } from '@aws-amplify/ui-react'
 import { API } from 'aws-amplify'
-import { setNestedObjectValues } from 'formik'
-import React, { useEffect, useMemo, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { SimpleSelect } from '../../components/SelectInput/SimpleSelect'
 import { useRoleBasedContext } from '../../context/RoleBasedContext'
 import { useUserContext } from '../../context/UserAuthContext'

@@ -14,6 +14,7 @@ import { useAuthenticator } from "@aws-amplify/ui-react";
 import { UserAuthProvider } from "../../context/UserAuthContext";
 import { RoleBasedContextProvider } from "../../context/RoleBasedContext";
 import { useHistory } from "react-router-dom";
+import { Mentors } from "../Mentors/Mentors";
 
 export const Dashboard = () => {
   const [session, ] = useSessionContext()
@@ -54,12 +55,14 @@ export const Dashboard = () => {
   );
 
   const project = () => {
+    console.log(topics)
     switch (topics&&topics.length&&topics[contentIndex]) {
       case "Admin": return   <Admin />;
       case "Dashboard": return <DashboardView />;
       case "Practitioner": return <Practitioner />;
       case "Business": return <Business />;
-      // case "Organizations": return <Organizations />;
+      case "Organizations": return <Organizations />;
+      case "Mentors": return <Mentors />;
       default: return <h1>No project match</h1>
     }
   }

@@ -208,7 +208,10 @@ export const Admin = () => {
         email: user.email,
         email_verified: user.email_verified,
         role: user.role,
-        sub: user.sub
+        sub: user.sub,
+        organizations:user.organizations,
+        mentorIds:user.mentorIds
+
     }))
 
     const UserModal = useMemo(() => {

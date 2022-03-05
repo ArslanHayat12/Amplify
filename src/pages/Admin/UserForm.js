@@ -30,7 +30,9 @@ export const UserForm = (props) => {
         email: '',
         businessId: '',
         clinikoUserId: '',
-        practitionerId: ''
+        practitionerId: '',
+        mentorIds:'',
+        organizations:''
     }
 
     useEffect(() => {
@@ -75,7 +77,7 @@ export const UserForm = (props) => {
         setSelectedObject(selectedObject)
     }, [value, JSON.stringify(formRef.current)])
 
-    
+
     useEffect(() => {
         const selectedObject = businesses.find(business => business.id === value);
         if (formRef.current) {
@@ -84,18 +86,18 @@ export const UserForm = (props) => {
                 "email",
                 isBusiness ? selectedObject?.email : formRef.current.values.email
             );
-            
+
             formRef.current.setFieldValue(
                 "businessId",
                 isBusiness ? selectedObject?.id : ''
             );
-          
+
         }
         setSelectedObject(selectedObject)
-    }, [value, JSON.stringify(formRef.current),businesses])
+    }, [value, JSON.stringify(formRef.current), businesses])
 
     const handleCreateUser = (values, resetForm) => {
-        const { email, name, role, clinikoUserId, practitionerId, businessId } = values
+        const { email, name, role, clinikoUserId, practitionerId, businessId,mentorIds,organizations } = values
         const addUser = (
             async () => {
                 const data = {
@@ -106,7 +108,9 @@ export const UserForm = (props) => {
                         parentId: user.attributes.sub,
                         clinikoUserId,
                         practitionerId,
-                        businessId
+                        businessId,
+                        mentorIds:mentorIds.join(),
+                        organizations:organizations.join()
                     }
                 }
                 try {
@@ -159,13 +163,14 @@ export const UserForm = (props) => {
             currentUser: null
         })
     }
-
+    
     const memoizedUserForm = useMemo(
         () => (
             <Formik
                 enableReinitialize
                 initialValues={currentUser ? currentUser : data}
                 onSubmit={(values, { resetForm }) => {
+                    
                     currentUser ? handleEditUser(values, resetForm) : handleCreateUser(values, resetForm)
                 }}
                 innerRef={formRef}
@@ -191,7 +196,9 @@ export const UserForm = (props) => {
                                 options={[
                                     { key: 'Admin', value: 'Admin' },
                                     { key: 'Practitioner', value: 'Practitioner' },
-                                    { key: 'Business', value: 'Business' }
+                                    { key: 'Business', value: 'Business' },
+                                    { key: 'Mentor', value: 'Mentor' },
+                                    { key: 'Organization', value: 'Organization' }
                                 ]}
                                 onChange={
                                     (value) => {
@@ -201,6 +208,38 @@ export const UserForm = (props) => {
                                 }
                             />
                         </LabelWithInputItem>
+                        {values.role?.includes("Organization") &&
+                            <LabelWithInputItem label="Businesses">
+                                <MultipleTagSelect
+                                    name="organizations"
+                                    width="medium"
+                                    options={businessOptions}
+                                    setFieldValue={setFieldValue}
+                                    onChange={
+                                        (value) => {
+                                            setFieldValue("organizations", value)
+                                            setValue('')
+                                        }
+                                    }
+
+                                />
+                            </LabelWithInputItem>}
+                        {values.role?.includes("Mentor") &&
+                            <LabelWithInputItem label="Practitioners">
+                                <MultipleTagSelect
+                                    name="mentorIds"
+                                    width="medium"
+                                    options={practitionersOptions}
+                                    setFieldValue={setFieldValue}
+                                    onChange={
+                                        (value) => {
+                                            setFieldValue("mentorIds", value)
+                                            setValue('')
+                                        }
+                                    }
+
+                                />
+                            </LabelWithInputItem>}
                         {values.role?.includes("Practitioner") && <>
                             <LabelWithInputItem label="Practitioners">
                                 <MultipleTagSelect
@@ -221,9 +260,7 @@ export const UserForm = (props) => {
                                 <InputBox name="clinikoUserId" placeholder="Cliniko User ID" disabled={true} />
                             </LabelWithInputItem>
                             <LabelWithInputItem label="Practitioner Id">
-                                <InputBox name="practitionerId" placeholder="Practitioner Id"
-
-                                    disabled={true} />
+                                <InputBox name="practitionerId" placeholder="Practitioner Id" disabled={true} />
                             </LabelWithInputItem></>}
 
                         {values.role?.includes("Business") &&

@@ -4,9 +4,9 @@ width:100%;
 height:90vh;
 `
 
-export const OrganizationFormStyle = style.div`
+export const MentorFormStyle = style.div`
     display: flex;
-    justify-content: flex-start;
+    justify-content: flex-end;
     gap:1rem;
  
 `

@@ -317,11 +317,19 @@ app.put(path, function (req, res) {
       {
         Name: "custom:practitionerId",
         Value: req.body?.practitionerId
+      },
+      {
+        Name: "custom:organizations",
+        Value: req.body?.organizations
+      },
+      {
+        Name: "custom:mentorIds",
+        Value: req.body?.mentorIds
       }
     ]
   };
 
-  COGNITO_CLIENT.updateUserAttributes()
+  // COGNITO_CLIENT.updateUserAttributes()
 
   COGNITO_CLIENT.adminCreateUser(poolData, (error, data) => {
     console.log(error);
@@ -389,6 +397,14 @@ app.put(path + "/update", function (req, res) {
       {
         Name: "custom:practitionerId",
         Value: req.body?.practitionerId
+      },
+      {
+        Name: "custom:organizations",
+        Value: req.body?.organizations
+      },
+      {
+        Name: "custom:mentorIds",
+        Value: req.body?.mentorIds
       }
     ]
   };

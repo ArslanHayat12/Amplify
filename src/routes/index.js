@@ -43,6 +43,7 @@ export const Routes = () => {
                         <PrivateRoutes {...defaultPrivateRoutesProps} redirectPath="/practitioner" path='/practitioner' component={Main} role='Practitioner' />
                         <PrivateRoutes {...defaultPrivateRoutesProps} redirectPath="/business" path='/business' component={Main} role='Business' />
                         <PrivateRoutes {...defaultPrivateRoutesProps} redirectPath="/organizations" path='/organizations' component={Main} role='Organizations' />
+                        <PrivateRoutes {...defaultPrivateRoutesProps} redirectPath="/mentors" path='/mentors' component={Main} role='Mentor' />
 
                         <Route path='/login' component={Main} />
                         <Redirect
