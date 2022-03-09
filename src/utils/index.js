@@ -1,6 +1,15 @@
+
+export const getOrgMentorURL = (url,orgKey,values) => {
+    const params=values.join("")
+    const key = orgKey ? `business.keyword` : `practitioner.keyword`
+    const match_phrase=values.map(value=>`(match_phrase:(${key}:'${value}'))`).join(",")
+
+    return url && `${url.url + url.dashboardId}?embed=true&_g=(filters:!((meta:(alias:!n,disabled:!f,index:'90bf3f10-5e50-11ec-b275-070a29d78d3f',key:${key},negate:!f,params:!(${params}),type:phrases),query:(bool:(minimum_should_match:1,should:!(${match_phrase})))))%2CrefreshInterval%3A(pause%3A!t%2Cvalue%3A0)%2Ctime%3A(from%3Anow-4y%2Cto%3Anow))&show-time-filter=true&hide-filter-bar=true`
+}
+
 export const getEmbededURL = (url, user, isAdmin, isBusiness, value) => {
     const practitionerId = value || user.attributes['custom:practitionerId']
-    const businessId =  value || user.attributes['custom:businessId']
+    const businessId = value || user.attributes['custom:businessId']
 
     const filter = isAdmin ? '' : isBusiness ? `business.keyword:${businessId}` : `practitioner.keyword:${practitionerId}`
 
@@ -21,6 +30,8 @@ export const getCustomRoleType = (customRole) => {
 
     return { isBusiness, isPractitioner, isAdmin }
 }
+
+
 
 export const generatedUrl = (url, filter, key, isAdmin) => {
 

@@ -4,7 +4,7 @@ import React, { useEffect, useState } from "react";
 import { SimpleSelect } from "../../components/SelectInput/SimpleSelect";
 import { useRoleBasedContext } from "../../context/RoleBasedContext";
 import { useUserContext } from "../../context/UserAuthContext";
-import { getCustomRoleType, getEmbededURL } from "../../utils";
+import { getCustomRoleType, getEmbededURL, getOrgMentorURL } from "../../utils";
 import { IFrameStyle, MentorFormStyle } from "./style";
 export const Mentors = () => {
     const { dispatch, state } = useUserContext();
@@ -83,7 +83,7 @@ export const Mentors = () => {
 
 
     const mentorUrl = rolesList?.find((role) =>
-        role.role.includes("Mentors")
+        role.role.includes("Practitioner")
     );
     return (
         <>
@@ -111,13 +111,7 @@ export const Mentors = () => {
             </MentorFormStyle>
             <IFrameStyle
                 key={value}
-                src={getEmbededURL(
-                    mentorUrl,
-                    user,
-                    null,
-                    Boolean(mentorUrl),
-                    isAdmin ? value : ""
-                )}
+                src={getOrgMentorURL(mentorUrl,false,prcatitionerIds)}
             ></IFrameStyle>
         </>
     );

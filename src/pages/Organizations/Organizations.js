@@ -4,7 +4,7 @@ import React, { useEffect, useState } from "react";
 import { SimpleSelect } from "../../components/SelectInput/SimpleSelect";
 import { useRoleBasedContext } from "../../context/RoleBasedContext";
 import { useUserContext } from "../../context/UserAuthContext";
-import { getCustomRoleType, getEmbededURL } from "../../utils";
+import { getCustomRoleType, getOrgMentorURL } from "../../utils";
 import { IFrameStyle, OrganizationFormStyle } from "./style";
 export const Organizations = () => {
   const { dispatch, state } = useUserContext();
@@ -89,7 +89,7 @@ export const Organizations = () => {
 
 
   const organizationUrl = rolesList?.find((role) =>
-    role.role.includes("Organization")
+    role.role.includes("Business")
   );
   return (
     <>
@@ -112,20 +112,13 @@ export const Organizations = () => {
         options={organizations}
         placeholder="Select Business"
         onChange={(value) => {
-          console.log(value);
           setOrganizationIds(value)
         }}
       />
       </OrganizationFormStyle>
       <IFrameStyle
         key={value}
-        src={getEmbededURL(
-          organizationUrl,
-          user,
-          null,
-          Boolean(organizationUrl),
-          isAdmin ? value : ""
-        )}
+        src={getOrgMentorURL(organizationUrl,true,organizationIds)}
       ></IFrameStyle>
     </>
   );
