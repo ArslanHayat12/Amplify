@@ -64,7 +64,7 @@ export const Mentors = () => {
         sub: user.sub,
         mentors: practitioners
             .filter((practitioner) => {
-                return user.mentorIds.includes(practitioner.practitionerId);
+                return user.mentorIds?.includes(practitioner.practitionerId);
             })
             .map(practitioner => ({ key: practitioner.practitionerId, value: practitioner.full_name }))
     }));
@@ -83,7 +83,7 @@ export const Mentors = () => {
 
 
     const mentorUrl = rolesList?.find((role) =>
-        role.role.includes("Practitioner")
+        role?.role?.includes("Practitioner")
     );
     return (
         <>

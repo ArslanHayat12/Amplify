@@ -71,8 +71,8 @@ export const Organizations = () => {
     role: user.role,
     sub: user.sub,
     organizations: businesses
-      .filter((business) => {
-        return user.organizations.includes(business.id);
+      ?.filter((business) => {
+        return user.organizations?.includes(business.id);
       })
       .map((business) => ({
         key: business.id,
@@ -89,7 +89,7 @@ export const Organizations = () => {
 
 
   const organizationUrl = rolesList?.find((role) =>
-    role.role.includes("Business")
+    role?.role?.includes("Business")
   );
   return (
     <>
