@@ -102,7 +102,7 @@ export const Mentors = () => {
                     width="medium"
                     mode="multiple"
                     options={mentors}
-                    placeholder="Select Practioner"
+                    placeholder="Select User"
                     onChange={(value) => {
                         console.log(value);
                         setPrcatitionerIds(value)

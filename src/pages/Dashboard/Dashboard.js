@@ -15,6 +15,7 @@ import { UserAuthProvider } from "../../context/UserAuthContext";
 import { RoleBasedContextProvider } from "../../context/RoleBasedContext";
 import { useHistory } from "react-router-dom";
 import { Mentors } from "../Mentors/Mentors";
+import { PayrollSync } from "../PayrollSync/PayrollSync";
 
 export const Dashboard = () => {
   const [session, ] = useSessionContext()
@@ -55,7 +56,6 @@ export const Dashboard = () => {
   );
 
   const project = () => {
-    console.log(topics)
     switch (topics&&topics.length&&topics[contentIndex]) {
       case "Admin": return   <Admin />;
       case "Dashboard": return <DashboardView />;
@@ -63,6 +63,8 @@ export const Dashboard = () => {
       case "Business": return <Business />;
       case "Organizations": return <Organizations />;
       case "Mentors": return <Mentors />;
+      case "Payroll Sync": return <PayrollSync />;
+      
       default: return <h1>No project match</h1>
     }
   }

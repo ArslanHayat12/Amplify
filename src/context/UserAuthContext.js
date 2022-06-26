@@ -34,6 +34,12 @@ const reducer = (state, action) => {
                 const organizations = user.Attributes.map(attribute => {
                     return attribute.Name === 'custom:organizations' ? attribute.Value.split(",") : null
                 }).filter(Boolean)[0]
+                const practitionerId = user.Attributes.map(attribute => {
+                    return attribute.Name === 'custom:practitionerId' ? attribute.Value.split(",") : null
+                }).filter(Boolean)[0]
+                const businessId = user.Attributes.map(attribute => {
+                    return attribute.Name === 'custom:businessId' ? attribute.Value.split(",") : null
+                }).filter(Boolean)[0]
                 const mentorIds = user.Attributes.map(attribute => {
                     return attribute.Name === 'custom:mentorIds' ? attribute.Value.split(",") : null
                 }).filter(Boolean)[0]
@@ -49,7 +55,10 @@ const reducer = (state, action) => {
                 const parentId = user.Attributes.map(attribute => {
                     return attribute.Name === 'custom:parentId' ? attribute.Value : null
                 }).filter(Boolean)[0]
-                return { ...user, role: role || ['Admin'], email, email_verified, parentId,sub,mentorIds,organizations }
+                const display_name = user.Attributes.map(attribute => {
+                    return attribute.Name === 'custom:display_name' ? attribute.Value : null
+                }).filter(Boolean)[0]
+                return { ...user, role: role || ['Admin'],display_name, email, email_verified, parentId,sub,mentorIds,organizations,practitionerId,businessId }
             })
             const filteredData = mappedData.filter(userData => userData.parentId === action.loggedInUserId)
             const practitioner = filteredData.filter(data => data.role?.includes("Practitioner")).length;
@@ -72,6 +81,12 @@ const reducer = (state, action) => {
                 const organizations = user.Attributes.map(attribute => {
                     return attribute.Name === 'custom:organizations' ? attribute.Value.split(",") : null
                 }).filter(Boolean)[0]
+                const practitionerId = user.Attributes.map(attribute => {
+                    return attribute.Name === 'custom:practitionerId' ? attribute.Value.split(",") : null
+                }).filter(Boolean)[0]
+                const businessId = user.Attributes.map(attribute => {
+                    return attribute.Name === 'custom:businessId' ? attribute.Value.split(",") : null
+                }).filter(Boolean)[0]
                 const mentorIds = user.Attributes.map(attribute => {
                     return attribute.Name === 'custom:mentorIds' ? attribute.Value.split(",") : null
                 }).filter(Boolean)[0]
@@ -87,7 +102,10 @@ const reducer = (state, action) => {
                 const parentId = user.Attributes.map(attribute => {
                     return attribute.Name === 'custom:parentId' ? attribute.Value : null
                 }).filter(Boolean)[0]
-                return { ...user, role: role || ['Admin'], email, email_verified, parentId,sub,organizations,mentorIds }
+                const display_name = user.Attributes.map(attribute => {
+                    return attribute.Name === 'custom:display_name' ? attribute.Value : null
+                }).filter(Boolean)[0]
+                return { ...user, role: role || ['Admin'], email, email_verified, parentId,sub,organizations,mentorIds,display_name,practitionerId,businessId }
             })
             const filteredData = mappedData.find(userData => userData.sub === action.loggedInUserId)
             return {

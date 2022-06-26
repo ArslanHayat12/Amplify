@@ -42,3 +42,29 @@ export const generatedUrl = (url, filter, key, isAdmin) => {
 query:(match_phrase:(${filter}))))%2CrefreshInterval%3A(pause%3A!t%2Cvalue%3A0)%2Ctime%3A(from%3Anow-4y%2Cto%3Anow))&show-time-filter=true&hide-filter-bar=true`
 
 }
+
+//var csv is the CSV file with headers
+export const csvJSON=(csv)=>{
+
+    var lines=csv.split("\n");
+  
+    var result = [];
+  
+    var headers=lines[0].split(",");
+  
+    for(var i=1;i<lines.length;i++){
+  
+        var obj = {};
+        var currentline=lines[i].split(",");
+  
+        for(var j=0;j<headers.length;j++){
+            obj[headers[j]] = currentline[j];
+        }
+  
+        result.push(obj);
+  
+    }
+    
+    //return result; //JavaScript object
+    return result; //JSON
+  }

@@ -299,6 +299,10 @@ app.put(path, function (req, res) {
         Value: "true"
       },
       {
+        Name: 'custom:display_name',
+        Value: req.body?.name,
+      },
+      {
         Name: 'custom:role',
         Value: req.body?.role,
       },
@@ -383,8 +387,16 @@ app.put(path + "/update", function (req, res) {
         Value: req.body?.email
       },
       {
+        Name: 'custom:display_name',
+        Value: req.body?.name,
+      },
+      {
         Name: 'custom:role',
         Value: req.body?.role,
+      },
+      {
+        Name: "custom:parentId",
+        Value: req.body?.parentId
       },
       {
         Name: "custom:businessId",

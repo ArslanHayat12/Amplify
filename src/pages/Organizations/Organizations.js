@@ -58,7 +58,7 @@ export const Organizations = () => {
   useEffect(() => {
     if (value) {
       const selectedOrganization =
-        data?.find((business) => business.name === value) || [];
+        data?.find((business) => business.key === value) || [];
       setOrganizations(selectedOrganization.organizations);
     }
   }, [value]);

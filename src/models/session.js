@@ -17,12 +17,13 @@ export const getRoleBasedRoutes = (role) => {
     return {
         routes: [
             isAdmin && { name: 'Admin', path: '/admin', icon: <AreaChartOutlined /> },
+            isAdmin && { name: 'Payroll Sync', path: '/sync', icon: <AreaChartOutlined /> },
             (isAdmin || isDashboard) && { name: 'Dashboard', path: '/dashboard', icon: <AreaChartOutlined /> },
             (isAdmin || isPractitioner) && { name: 'Practitioner', path: '/practitioner', icon: <AreaChartOutlined /> },
             (isAdmin || isBusiness) && { name: 'Business', path: '/business', icon: <AreaChartOutlined /> },
             (isAdmin || isOrganizations) && { name: 'Organizations', path: '/organizations', icon: <AreaChartOutlined /> },
             (isAdmin || isMentor) && { name: 'Mentors', path: '/mentors', icon: <AreaChartOutlined /> }
         ].filter(Boolean),
-        redirectPath: isAdmin ? '/admin' : isPractitioner ? '/practitioner' : isBusiness ? '/business' : isDashboard ? '/dashboard' : isMentor ? '/mentors' : '/organizations'
+        redirectPath: isAdmin ? '/admin' : isPractitioner ? '/practitioner' : isBusiness ? '/business' : isDashboard ? '/dashboard' : isMentor ? '/mentors' :isOrganizations? '/organizations':'/sync'
     }
 }

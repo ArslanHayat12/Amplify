@@ -201,16 +201,18 @@ export const Admin = () => {
 
         }
     )
-
+console.log(state.usersList)
     const data = state.usersList?.map(user => ({
         key: user.Username,
-        name: user.Username,
+        name: user.display_name||user.Username||user.email,
         email: user.email,
         email_verified: user.email_verified,
         role: user.role,
         sub: user.sub,
         organizations:user.organizations,
-        mentorIds:user.mentorIds
+        mentorIds:user.mentorIds,
+        practitionerId:user.practitionerId,
+        businessId:user.businessId
 
     }))
 
@@ -245,7 +247,7 @@ export const Admin = () => {
 
             </AdminStyle>
             <ButtonStyle>
-                <Button onClick={() => handleDashboardModalForm()}>Add Dasboard Settings</Button>
+                <Button onClick={() => handleDashboardModalForm()}>Add Dashboard Settings</Button>
             </ButtonStyle>
             {DashboardFormModal}
             {MemoizedRoleDeleteModal}
