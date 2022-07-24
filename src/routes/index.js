@@ -356,6 +356,7 @@ export const Routes = () => {
     },
   };
   return (
+      <AuthWrapper>
       <Authenticator formFields={formFields} components={components}>
         {() => (
           <Switch>
@@ -420,5 +421,6 @@ export const Routes = () => {
           </Switch>
         )}
       </Authenticator>
+      </AuthWrapper>
   );
 };

@@ -24,11 +24,7 @@ flex-direction:column;
 `;
 
 export const AuthWrapper = style.div`
-    background: #e5e5e5;
-    height: 100vh; 
-    display: flex;
-    justify-content: center;
-    align-items: center;
+position: relative;
 `;
 export const TextWrapper = style.p`
    font-size:28px;
