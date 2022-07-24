@@ -3,3 +3,29 @@
 .content {
   padding: 1rem;
 }
+.amplify-button[data-variation=primary] {
+  display: flex !important;
+  margin: 2rem 0 !important;
+  justify-content: center !important;
+  background:#e15b37 !important;
+  border-radius:40px !important;
+}
+.amplify-tabs {
+  display: none !important;
+}
+
+.amplify-field__show-password{
+  position: absolute !important;
+  right: 36px !important;
+  height: 10px !important;
+  border: 0px !important;
+  
+}
+
+.amplify-field__show-password:focus {
+  box-shadow: none !important;
+}
+.amplify-input{
+  border-radius:40px !important;
+  color: #808191 !important;
+}
