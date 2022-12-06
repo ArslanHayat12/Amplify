@@ -1,11 +1,10 @@
 import React from "react";
-import { Layout } from "antd";
 
 import logo from "./../../logo.png";
-import { LogoStyle } from "./style";
+import { LogoStyle, SidebarStyle } from "./style";
 const SideBar = ({ menu }) => {
   return (
-    <Layout.Sider
+    <SidebarStyle
       className="sidebar"
       breakpoint={"lg"}
       theme="dark"
@@ -17,7 +16,7 @@ const SideBar = ({ menu }) => {
         />
       </LogoStyle>
       {menu}
-    </Layout.Sider>
+    </SidebarStyle>
   );
 };
 

@@ -95,7 +95,7 @@ export const Routes = () => {
                 onClick={toResetPassword}
                 size="small"
                 variation="link"
-                color={"#e15b37"}
+                color={"#2aa275"}
               >
                 Forgot Password
               </Button>
@@ -110,7 +110,7 @@ export const Routes = () => {
                 onClick={toSignUp}
                 size="small"
                 variation="link"
-                color={"#e15b37"}
+                color={"#2aa275"}
               >
                 Register
               </Button>
@@ -198,7 +198,7 @@ export const Routes = () => {
                 onClick={toSignIn}
                 size="small"
                 variation="link"
-                color={"#e15b37"}
+                color={"#2aa275"}
               >
                 Login
               </Button>

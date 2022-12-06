@@ -16,7 +16,7 @@ flex-direction:column;
     display: flex;
     margin: 2rem 0;
     justify-content: center;
-    background:#e15b37;
+    background:#2aa275;
     border-radius:40px;
 }
   }

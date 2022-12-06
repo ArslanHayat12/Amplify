@@ -159,7 +159,7 @@ export const UserForm = (props) => {
         resetForm();
         handleCancel();
       } catch (err) {
-        showMessage(`${err.error}`, "error");
+        showMessage(`${err?.response?.data?.error?.message||'Error'}`, "error");
       }
     };
     addUser();
@@ -175,8 +175,9 @@ export const UserForm = (props) => {
         role,
         mentorIds,
         name,
-        organizations,
+        organizations
       } = values;
+      console.log(values)
       const data = {
         body: {
           name,
@@ -186,6 +187,7 @@ export const UserForm = (props) => {
           clinikoUserId,
           practitionerId,
           businessId,
+          parentId:user.attributes.sub,
           mentorIds: (mentorIds || []).join(),
           organizations: (organizations || []).join(),
         },
@@ -203,7 +205,8 @@ export const UserForm = (props) => {
         resetForm();
         handleCancel();
       } catch (err) {
-        showMessage(`${err.error}`, "error");
+        
+        showMessage(`${err?.response?.data?.error?.message||'Error'}`, "error");
       }
     },
     [currentUser]

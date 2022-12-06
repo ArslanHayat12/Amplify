@@ -1,5 +1,6 @@
 import React from "react";
 import {Menu} from "antd";
+import { MenuStyle } from "./style";
 
 const TopicMenu = ({ topics, selectedKey, changeSelectedKey }) => {
   const styledTopics = [];
@@ -12,9 +13,9 @@ const TopicMenu = ({ topics, selectedKey, changeSelectedKey }) => {
   );
 
   return (
-    <Menu  theme="dark" mode="inline" selectedKeys={[selectedKey]}>
+    <MenuStyle  theme="dark" mode="inline" selectedKeys={[selectedKey]}>
       {styledTopics}
-    </Menu>
+    </MenuStyle>
   );
 }
 export default TopicMenu;
